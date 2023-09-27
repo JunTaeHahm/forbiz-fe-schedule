@@ -1,0 +1,11 @@
+{
+  "singleQuote": true,
+  "semi": true,
+  "useTabs": false,
+  "printWidth": 120,
+  "trailingComma": "all",
+  "tabWidth": 2,
+  "vueIndentScriptAndStyle": true,
+  "endOfLine": "auto",
+  "eslintIntegration": true
+}

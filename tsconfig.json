@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "esnext", // ECMAScript 대상 버전 지정: 'es3', 'es5', 'es2015', 'es2016', 'es2017','es2018', 'esnext'
+    "module": "esnext", // 모듈 코드 생성 지정: 'commonjs', 'amd', 'es2015', 'esnext'
+    "allowJs": false, // JavaScript 파일 컴파일 허용
+    "checkJs": false, // JavaScript 파일에서 오류 보고
+    "jsx": "preserve", // JSX 코드 생성 지정: 'preserve', 'react-native', 'react'
+    "declaration": true, // 해당 '.d.ts' 파일 생성
+    "removeComments": true, // 컴파일된 결과에서 주석 제거
+    "strict": true, // 모든 엄격한 타입 검사 옵션 활성화
+    "noImplicitAny": true, // 암시적 'any' 타입이 있는 표현식과 선언에 오류 발생
+    "strictNullChecks": true, // 엄격한 null 검사 활성화
+    "strictFunctionTypes": true, // 함수 타입의 엄격한 검사 활성화
+    "strictPropertyInitialization": true, // 속성 초기화의 엄격한 검사 활성화
+    "noImplicitThis": true, // 암시적 'any' 타입이 있는 'this' 표현식에 오류 발생
+    "alwaysStrict": true, // 엄격 모드에서 구문 분석 및 각 소스 파일에 대해 "use strict" 발생
+    "noUnusedLocals": true, // 사용하지 않는 로컬 변수에 대해 오류 보고
+    "noUnusedParameters": true, // 사용하지 않는 파라미터에 대해 오류 보고
+    "noImplicitReturns": true, // 함수에서 모든 코드 경로가 값을 반환하지 않으면 오류 보고
+    "noFallthroughCasesInSwitch": true, // switch 문의 fallthrough 케이스에 대해 오류 보고
+    "noEmit": true, // 출력 결과를 생성하지 않음
+    "useDefineForClassFields": true, // 클래스 필드에 대해 Define 사용
+    "importHelpers": true, // 'tslib'에서 emit 도우미 가져오기
+    "skipLibCheck": true, // 선언 파일의 타입 검사 건너뛰기
+    "resolveJsonModule": true, // '.json' 확장자로 가져온 모듈 포함
+    "esModuleInterop": true, // CommonJS/AMD/UMD 모듈 가져오기를 ES6 모듈 가져오기로 활성화
+    "allowSyntheticDefaultImports": true, // 기본 내보내기가 없는 모듈에서 기본 가져오기 허용
+    "moduleResolution": "node", // 모듈 해석 전략 지정: 'node' (Node.js) 또는 'classic' (TypeScript pre-1.6)
+    "isolatedModules": true, // 각 파일을 별도의 모듈로 변환
+    "sourceMap": true, // 해당 '.map' 파일 생성
+    "baseUrl": ".", // 비절대 모듈 이름을 해결하기 위한 기본 디렉터리
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"], // 컴파일에 포함될 라이브러리 파일 목록
+    "paths": { "@/*": ["src/*"] }, // 'baseUrl'에 상대적인 가져오기를 다시 매핑하는 일련의 항목
+    "typeRoots": ["./node_modules/@types", "./types"] // 타입 정의를 포함할 폴더 목록
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts"], // 컴파일될 파일을 포함시킬 글로브 패턴들
+  "exclude": ["node_modules", "dist"] // 컴파일에서 제외될 파일을 지정할 글로브 패턴들
+}
+
+// "outFile": "./", //모든 ts파일을 js파일 하나로 컴파일해줌 (module이 none, amd, system일 때만 가능)
+// "outDir": "./", //js파일 아웃풋 경로바꾸기
+// "rootDir": "./", //루트경로 바꾸기 (js 파일 아웃풋 경로에 영향줌)
