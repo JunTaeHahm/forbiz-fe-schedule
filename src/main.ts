@@ -4,9 +4,9 @@ import router from './router';
 import './styles/app.scss';
 import axios from 'axios';
 
-createApp(App).use(router).mount('#app');
+const app = createApp(App).use(router).mount('#app');
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
+const isDevelopment = import.meta.env.VITE_APP_NODE_ENV !== 'production';
 
 axios.defaults.withCredentials = true;
 if (isDevelopment) {
