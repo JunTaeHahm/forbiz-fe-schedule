@@ -1,4 +1,24 @@
-type FeMember = '전동엽' | '김승우' | '임지원' | '전민주' | '정수범' | '김석진' | '김태이' | '윤보라' | '정재원';
+type FeMember =
+  | '전동엽'
+  | '김승우'
+  | '임지원'
+  | '전민주'
+  | '정수범'
+  | '김석진'
+  | '김태이'
+  | '윤보라'
+  | '함준태'
+  | '정재원';
+
+type WeekSchedule = Pick<GetWeekScheduleItem, 'startDate' | 'endDate' | 'createName' | 'schTitle' | 'schSeq'>;
+
+type ShareSchedule = Pick<GetWeekScheduleItem, 'startDate' | 'endDate' | 'createName' | 'schSeq'>;
+
+interface ScheduleResult {
+  time: number;
+  overTime: number;
+  title: Set<string>;
+}
 
 interface GetWeekSchedulePayload {
   calType: 'M';
@@ -37,116 +57,25 @@ interface GetWeekScheduleItem {
 type GetWeekScheduleResponse = GetWeekScheduleItem[];
 
 interface GetScheduleDetailPayload {
-  detailYn: 'Y' | 'N';
-  schSeq: string;
-  schmSeq: string;
+  detailYn: 'Y';
+  schSeq: string[];
+  schmSeq: string[];
 }
 
 interface GetScheduleDetailItem {
-  mentionEmpList: { deptSeq: string; compSeq: string; empSeq: string }[];
-  schAlarmList: {
-    alarmType: string;
-    alarmRealDate: string;
-    alarmTimeDiv: string;
-    alarmUnitValue: string;
-    alarmTimeNm: string;
-    alarmTimeUnit: string;
-  }[];
-  event: {
-    timelineYn: 'Y' | 'N';
-    eventSubType: string;
-    mailYn: 'Y' | 'N';
-    data: {
-      schmSeq: string;
-      endDate: string;
-      contents: string;
-      schSeq: string;
-      createSeq: string;
-      gbnCode: string;
-      title: string;
-      startDate: string;
-    };
-    recvEmpBulkList: [];
-    smsYn: 'Y' | 'N';
-    pushYn: 'Y' | 'N';
-    eventType: string;
-    url: string;
-    recvEmpList: [];
-    recvMentionEmpList: [];
-    portalYn: 'Y' | 'N';
-    talkYn: 'Y' | 'N';
-    alertYn: 'Y' | 'N';
-    recvEmpBulk: string;
-  };
-  schUserList: {
-    deptName: string;
-    orgName: 'F.E';
-    loginId: string;
-    compName: string;
-    groupSeq: 'forbizkorea';
-    dutyName: string;
-    positionName: string;
-    orgType: string;
-    deptSeq: string;
-    compSeq: string;
-    bizSeq: string;
-    useYn: 'Y' | 'N';
-    userType: '10' | '20';
-    orgSeq: string;
-    seq: string;
-  }[];
-}
-interface GetScheduleDetailResponse {
-  schmSeq: string;
-  mentionEmpList: GetScheduleDetailItem['mentionEmpList'];
-  moduleGbnCode: string;
-  endDate: string;
-  createLoginId: string;
-  resList: [];
-  schSeq: string;
-  calTitle: string;
-  resListForDel: string;
-  gbnCode: string;
-  noteList: string;
-  repeatByDay: string;
-  schAlarmList: GetScheduleDetailItem['schAlarmList'];
-  schPlace: string;
-  groupSeq: string;
-  schReferList: [];
-  gbnName: string;
-  schMapLat: string;
-  commentType: string;
-  schTitle: string;
-  event: GetScheduleDetailItem['event'];
-  commentCnt: string;
-  mcalSeq: string;
-  fileList: [];
-  createDate: string;
-  schUserList: GetScheduleDetailItem['schUserList'];
-  empUniqGroup: string;
-  repeatType: string;
-  createSeq: string;
-  repeatEndDay: string;
-  schMapLng: string;
-  createWorkStatus: string;
-  createDeptSeq: string;
-  attDivCode: 'Y' | 'N';
-  moduleSeq: string;
-  delYn: 'Y' | 'N';
-  placeFileList: [];
-  schInviterList: [];
-  contents: string;
-  compSeq: string;
-  gbnSeq: string;
-  schGbnCode: string;
-  createCompSeq: string;
-  placeMapData: string;
-  alldayYn: 'Y' | 'N';
-  startDate: string;
   createName: FeMember;
-  inviterType: string;
+  startDate: string;
+  endDate: string;
+  schTitle: string;
+  userList: FeMember[];
 }
+type GetScheduleDetailResponse = GetScheduleDetailItem[];
+
 export type {
+  FeMember,
+  WeekSchedule,
+  ShareSchedule,
+  ScheduleResult,
   GetWeekSchedulePayload,
   GetWeekScheduleItem,
   GetWeekScheduleResponse,

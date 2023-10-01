@@ -1,9 +1,9 @@
 <template>
-  <week-schedule></week-schedule>
+  <home></home>
 </template>
 
 <script setup lang="ts">
-  import WeekSchedule from '@/components/week-schedule.vue';
+  import home from '@/views/home/index.vue';
 </script>
 
 <style lang="scss"></style>

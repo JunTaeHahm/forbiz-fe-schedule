@@ -8,20 +8,23 @@ dayjs.extend(utc);
  * @param d 포맷할 날짜 string
  * @returns YYYY-MM-DD HH:mm:ss
  */
-export const formatDate = (d: Date | string, type: 'date' | 'api' = 'date') => {
+export const formatDate = (d: Date | string, type: 'date' | 'api' | 'kor' = 'date') => {
   if (null === d || undefined === d || '' === d) return '';
 
-  if (type === 'api') {
-    const date = new Date(d);
+  const date = new Date(d);
 
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더해야 함
-    const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더해야 함
+  const day = String(date.getDate()).padStart(2, '0');
 
-    return `${year}${month}${day}`;
+  switch (type) {
+    case 'api':
+      return `${year}${month}${day}`;
+    case 'kor':
+      return `${year}년 ${month}월 ${day}일`;
+    default:
+      return dayjs.utc(d).format('YYYY-MM-DD HH:mm:ss');
   }
-
-  return dayjs.utc(d).format('YYYY-MM-DD HH:mm:ss');
 };
 
 /**
@@ -48,4 +51,24 @@ export const isAfterDate = (standardD: string | Date, compareD: string | Date) =
   const compareDate = dayjs(compareD);
 
   return compareDate.isAfter(standardDate);
+};
+
+/**
+ * 이번주 시작일과 종료일 구하기
+ * @returns startDate, endDate
+ */
+export const useCalculateWeek = () => {
+  const today = new Date();
+  const currentDay = today.getDay();
+
+  const monday = new Date(today);
+  const friday = new Date(monday);
+
+  monday.setDate(monday.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
+  friday.setDate(friday.getDate() + 4);
+
+  const startDate = formatDate(monday);
+  const endDate = formatDate(friday);
+
+  return { startDate, endDate };
 };

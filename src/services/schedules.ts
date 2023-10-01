@@ -21,7 +21,6 @@ export default class ScheduleService {
 
   /** 주간 일정 가져오기 */
   public async getWeekSchedule(payload: GetWeekSchedulePayload) {
-    console.log('payload: ', payload);
     try {
       const result = await axios.post<GetWeekScheduleResponse>(`${this.baseUrl}/api/getWeekSchedule`, payload);
 
@@ -34,9 +33,9 @@ export default class ScheduleService {
   }
 
   /** 일정 상세 데이터 가져오기 */
-  public async getScheduleDetail(payload: GetScheduleDetailPayload) {
+  public async getDetailSchedule(payload: GetScheduleDetailPayload) {
     try {
-      const result = await axios.post<GetScheduleDetailResponse>(`${this.baseUrl}/api/getScheduleDetail`, payload);
+      const result = await axios.post<GetScheduleDetailResponse>(`${this.baseUrl}/api/getDetailSchedule`, payload);
       console.log('result: ', result);
 
       return result.data;

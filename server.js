@@ -24,11 +24,11 @@ app.use(
 );
 
 // 정적 파일 제공 설정: build 디렉터리의 파일들을 캐싱과 함께 제공
-const buildDirectory = path.join(__dirname, 'build');
+const buildDirectory = path.join(__dirname, 'dist');
 app.use(express.static(buildDirectory, { maxAge: 2629800, immutable: true }));
 
 // src 디렉터리에 대한 별도의 정적 파일 제공 설정
-const srcDirectory = path.join(__dirname, 'build/src');
+const srcDirectory = path.join(__dirname, 'dist/src');
 app.use('/src', express.static(srcDirectory, { maxAge: 2629800, immutable: true }));
 
 // JSON 및 URL 인코딩 미들웨어 설정

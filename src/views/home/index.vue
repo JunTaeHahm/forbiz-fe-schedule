@@ -1,4 +1,7 @@
 <template>
+  {{ fetches }}
+  {{ formatDate(startDate, 'kor') }}
+  {{ formatDate(endDate, 'kor') }}
   <table>
     <thead>
       <tr>
@@ -42,8 +45,10 @@
 </template>
 
 <script setup lang="ts">
-  import weekScheduleComposable from '@/composables/week-schedule';
-  const { members, schedules } = weekScheduleComposable();
+  import homeComposable from '@/composables/views/home';
+  import { formatDate } from '@/utils/date';
+
+  const { fetches, startDate, endDate, members, schedules } = homeComposable();
 </script>
 
 <style scoped lang="scss">
