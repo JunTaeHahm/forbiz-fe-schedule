@@ -1,0 +1,38 @@
+jobs:
+  # job의 이름 설정
+  deploy:
+  	# 해당 job을 실행하는 운영 체제
+    runs-on: ubuntu-latest
+	
+    # 수행할 동작 정의
+    steps:
+      # 1. 저장소 체크아웃
+      - name: Checkout source code
+        uses: actions/checkout@main
+	  
+      # 2. node.js 환경설정
+      - name: Set up Node.js
+        uses: actions/setup-node@main
+        with:
+          node-version: 14.x
+      
+      # 3. 패키지 설치
+      - name: Install dependencies
+        run: npm install
+      
+      # 4. 테스트
+      - name: Test unit
+        run: npm run test:unit
+      
+      # 5. 빌드
+      - name: Build Page
+        run: npm run build
+        env:
+          NODE_ENV: production
+	  
+      # 6. gh-pages로 배포
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
