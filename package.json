@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "vite",
     "serve": "nodemon server.js",
-    "build": "npx playwright install && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint --ext .ts,vue --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@playwright/test": "^1.38.1",
     "@vue/compiler-sfc": "^3.3.4",
     "axios": "^1.5.0",
     "bunyan": "^1.8.15",
@@ -28,6 +29,7 @@
     "mitt": "^3.0.1",
     "nodemon": "^3.0.1",
     "pinia": "^2.1.6",
+    "playwright-core": "^1.38.1",
     "rollup-plugin-copy": "^3.5.0",
     "sass-rem": "^3.0.0",
     "spdy": "^4.0.2",
@@ -48,7 +50,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.22.19",
-    "@playwright/test": "^1.38.1",
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
     "@types/chartjs-plugin-crosshair": "^1.1.2",
     "@types/cors": "^2.8.14",
@@ -69,7 +70,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-vue": "^9.17.0",
-    "playwright": "^1.38.1",
+    "gh-pages": "^6.0.0",
     "prettier": "^3.0.3",
     "sass": "^1.67.0",
     "sass-loader": "^13.3.2",
