@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "serve": "nodemon server.js",
-    "build": "vite build",
+    "build": "npx playwright install && vite build",
     "preview": "vite preview",
     "lint": "eslint --ext .ts,vue --ignore-path .gitignore ."
   },
