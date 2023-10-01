@@ -15,7 +15,7 @@ export default class ScheduleService {
     if (isDevelopment) {
       this.baseUrl = 'http://localhost:3000'; // 개발
     } else {
-      this.baseUrl = 'https://www.sentenceu.co.kr'; // 배포
+      this.baseUrl = 'https://port-0-forbiz-fe-schedule-1b5xkk2fldd5874v.gksl2.cloudtype.app'; // 배포
     }
   }
 
