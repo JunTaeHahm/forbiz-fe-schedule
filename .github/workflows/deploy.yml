@@ -32,9 +32,6 @@ jobs:
           npm install
           npx playwright install
           sudo npx playwright install-deps
-          
-      - name: List files in dist directory
-        run: ls -al ./dist
 
       # 빌드
       - name: Build Page
@@ -45,6 +42,9 @@ jobs:
           VITE_APP_SERVER_BASE_URL: "https://JunTaeHahm.github.io/forbiz-fe-schedule/"
           USER_ID: jthahm
           USER_PW: "!Joontae01"
+
+      - name: List files in dist directory
+        run: ls -al ./dist
 
       # 서버 실행
       - name: Start the server
