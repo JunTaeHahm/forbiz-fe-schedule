@@ -15,7 +15,7 @@ jobs:
       # 1. 저장소 체크아웃
       - name: Checkout source code
         uses: actions/checkout@v2
-	  
+	
       # 2. node.js 환경설정
       - name: Set up Node.js
         uses: actions/setup-node@main
@@ -42,7 +42,7 @@ jobs:
           VITE_APP_SERVER_BASE_URL: https://JunTaeHahm.github.io/forbiz-fe-schedule/
           USER_ID: jthahm
           USER_PW: !Joontae01
-
+	  
       - name: Start the server
         run: node server.js &
 	  
