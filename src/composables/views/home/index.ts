@@ -39,6 +39,17 @@ export default function homeComposable() {
       fetches[key] = 'error';
     },
   };
+
+  const isLoading = computed(() => {
+    return (
+      fetches.getDetailSchedule === 'ing' ||
+      fetches.getDetailSchedule === 'wait' ||
+      fetches.getWeekSchedule === 'ing' ||
+      fetches.getWeekSchedule === 'wait' ||
+      fetches.weekScheduleList === 'ing' ||
+      fetches.weekScheduleList === 'wait'
+    );
+  });
   // #endregion
 
   // #region 서비스
@@ -52,11 +63,20 @@ export default function homeComposable() {
   const schSeqList = ref<GetScheduleDetailPayload['schSeq']>([]);
 
   // 멤버 리스트
-  const members = computed(() => [...new Set(weekScheduleList.value.map((schedule) => schedule.createName))].sort());
+  const members = computed(() => {
+    // if (weekScheduleList.value.length !== 0) {
+    //   return [...new Set(weekScheduleList.value.map((schedule) => schedule.createName))].sort();
+    // }
+
+    return ['김석진', '김승우', '김태이', '윤보라', '임지원', '전동엽', '전민주', '정수범', '정재원', '함준태'];
+  });
   // #endregion
 
   // #region 주간 일정
-  const schedules = ref<Record<string, ScheduleResult>[]>([]);
+  const schedules = ref<Record<string, ScheduleResult>[]>(Array(10).fill({}));
+
+  const isCompanySchedule = ref<boolean>(false);
+  const isFeSchedule = ref<boolean>(false);
 
   watch(weekScheduleList, (newValue) => {
     fetch.start('weekScheduleList');
@@ -74,11 +94,14 @@ export default function homeComposable() {
 
         if (!match) return;
 
-        // 멤버명, 프로젝트명, FE일정여부, 일정제목
+        // 멤버명, 프로젝트명, 일정제목
         const memberName: FeMember = schedule.createName;
         const projectName = `[${match[1]}]`;
-        const isFeSchedule = projectName === '[FE]';
         const title = match.input?.replace(projectName, '').trim() ?? '';
+
+        // 전사일정, FE일정 여부
+        isCompanySchedule.value = projectName === '[전사]' || projectName === '[전사공통]';
+        isFeSchedule.value = projectName === '[FE]';
 
         // 일정 시간, OT여부, OT시간 가져오기
         const { time, hasOverTime, overTime } = useCalculateTime(schedule);
@@ -113,9 +136,6 @@ export default function homeComposable() {
             result[projectName] = { time: time - overTime, overTime, title: new Set([title]) };
           }
 
-          // FE일정 내용 추가
-          if (isFeSchedule) result[projectName].title?.add(title);
-
           result[projectName].time! += time - overTime; // OT는 따로 계산하므로 전체 시간에서 OT를 뺀 시간만 추가
           result[projectName].overTime! += overTime; // OT시간 추가
           result[projectName].title?.add(title); // 일정 내용 추가
@@ -126,10 +146,13 @@ export default function homeComposable() {
             result[projectName] = { time: 0, overTime: 0, title: new Set() };
           }
 
-          // FE일정 내용 추가
-          if (isFeSchedule) result[projectName].title?.add(title);
-
           result[projectName].time! += time; // 일정 시간만 추가
+        }
+
+        // FE일정 내용 추가
+        if (isFeSchedule.value) result[projectName].title?.add(title);
+        if (isCompanySchedule.value) {
+          result[projectName].title?.add(title);
         }
       });
 
@@ -141,10 +164,31 @@ export default function homeComposable() {
       fetch.isError('weekScheduleList');
     }
 
+    // 전사일정을 가지고있는 인덱스 찾기
+    const companyScheduleStrings = ['[전사]', '[전사공통]'];
+    const companySchedulesIndex = schedules.value.findIndex((schedule) =>
+      Object.keys(schedule).some((key) => companyScheduleStrings.includes(key)),
+    );
+
+    // 멤버 중 전사일정을 가지고 있을 경우 모든 멤버에게 전사일정 추가
+    if (companySchedulesIndex !== -1) {
+      const matchedKeys = Object.keys(schedules.value[companySchedulesIndex]).filter((key) =>
+        companyScheduleStrings.includes(key),
+      );
+
+      schedules.value = schedules.value.map((schedule) => {
+        matchedKeys.forEach((key) => {
+          schedule[key] = schedules.value[companySchedulesIndex][key];
+        });
+
+        return schedule;
+      });
+    }
+
     fetch.isSuccess('weekScheduleList');
   });
-
   // #endregion
+
   // #region api
   /** 주간일정 가져오기 */
   const getWeekSchedule = async () => {
@@ -206,7 +250,10 @@ export default function homeComposable() {
           .map((v) => v.schSeq);
 
         // 공유일정 없을 경우 return
-        if (schSeqList.value.length === 0) return;
+        if (schSeqList.value.length === 0) {
+          fetch.isSuccess('getDetailSchedule');
+          return;
+        }
 
         // 상세공유일정 가져오기
         const shareSchedule = await getDetailSchedule();
@@ -259,5 +306,5 @@ export default function homeComposable() {
     init();
   });
 
-  return { fetches, startDate, endDate, members, schedules };
+  return { isLoading, startDate, endDate, members, schedules };
 }

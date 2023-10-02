@@ -1,7 +1,12 @@
 <template>
-  {{ fetches }}
-  {{ formatDate(startDate, 'kor') }}
-  {{ formatDate(endDate, 'kor') }}
+  <div
+    v-if="isLoading"
+    class="dim-layer"
+  >
+    <div class="loading-animation"></div>
+  </div>
+  <h2>FE팀 일정</h2>
+  {{ formatDate(startDate, 'kor') }} ~ {{ formatDate(endDate, 'kor') }}
   <table>
     <thead>
       <tr>
@@ -19,24 +24,30 @@
           v-for="(schedule, s_i) in schedules"
           :key="`${schedule}-${s_i}`"
         >
-          <div
-            v-for="(data, projectName, d_i) in schedule"
-            :key="`${data}-${d_i}`"
-          >
-            <strong>{{ projectName }}</strong>
-            <div>T: {{ data.time }}</div>
-            <template v-if="data.overTime || projectName === '[FE]'">
-              <div>{{ data.overTime > 0 ? `OT: ${data.overTime}` : '' }}</div>
-              <div>
-                <span
-                  v-for="(item, t_i) in data.title ? [...data.title] : []"
-                  :key="`${projectName}-${t_i}`"
-                >
-                  {{ item !== '' ? `- ${item}` : '' }}<br />
-                </span>
-              </div>
-            </template>
-            <br />
+          <div class="flex-wrap">
+            <div
+              v-for="(data, projectName, d_i) in schedule"
+              :key="`${data}-${d_i}`"
+            >
+              <strong>{{ projectName }}</strong>
+              <div>T: {{ data.time }}</div>
+              <template
+                v-if="
+                  data.overTime || projectName === '[FE]' || projectName === '[전사]' || projectName === '[전사공통]'
+                "
+              >
+                <div>{{ data.overTime > 0 ? `OT: ${data.overTime}` : '' }}</div>
+                <div>
+                  <span
+                    v-for="(item, t_i) in data.title ? [...data.title] : []"
+                    :key="`${projectName}-${t_i}`"
+                  >
+                    {{ item !== '' ? `- ${item}` : '' }}<br />
+                  </span>
+                </div>
+              </template>
+              <br />
+            </div>
           </div>
         </td>
       </tr>
@@ -48,32 +59,9 @@
   import homeComposable from '@/composables/views/home';
   import { formatDate } from '@/utils/date';
 
-  const { fetches, startDate, endDate, members, schedules } = homeComposable();
+  const { isLoading, startDate, endDate, members, schedules } = homeComposable();
 </script>
 
 <style scoped lang="scss">
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-
-  thead {
-    background-color: #f2f2f2;
-
-    td {
-      width: 10%;
-      font-weight: bold;
-      padding: 10px;
-      border: 1px solid #ddd;
-      text-align: center;
-    }
-  }
-
-  tbody {
-    td {
-      padding: 8px;
-      border: 1px solid #ddd;
-    }
-  }
+  @import '@/styles/home/index.scss';
 </style>

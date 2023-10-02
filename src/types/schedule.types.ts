@@ -1,14 +1,14 @@
 type FeMember =
-  | '전동엽'
-  | '김승우'
-  | '임지원'
-  | '전민주'
-  | '정수범'
   | '김석진'
+  | '김승우'
   | '김태이'
   | '윤보라'
-  | '함준태'
-  | '정재원';
+  | '임지원'
+  | '전동엽'
+  | '전민주'
+  | '정수범'
+  | '정재원'
+  | '함준태';
 
 type WeekSchedule = Pick<GetWeekScheduleItem, 'startDate' | 'endDate' | 'createName' | 'schTitle' | 'schSeq'>;
 
