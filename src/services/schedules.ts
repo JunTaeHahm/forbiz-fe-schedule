@@ -36,7 +36,6 @@ export default class ScheduleService {
   public async getDetailSchedule(payload: GetScheduleDetailPayload) {
     try {
       const result = await axios.post<GetScheduleDetailResponse>(`${this.baseUrl}/api/getDetailSchedule`, payload);
-      console.log('result: ', result);
 
       return result.data;
     } catch (error) {

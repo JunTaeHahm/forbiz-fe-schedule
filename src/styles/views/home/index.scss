@@ -4,12 +4,13 @@
   &__home {
     position: absolute;
     top: 50%;
+    left: 50%;
     display: flex;
-    margin: 0 100px;
+    width: calc(100% - 200px);
     border-radius: 50px;
     background-color: $bg-lightblue;
     box-shadow: $shadow-l;
-    transform: translate(0, -50%);
+    transform: translate(-50%, -50%);
 
     &__header {
       display: flex;
@@ -39,6 +40,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
         gap: 10px;
         margin-top: 20px;
 
@@ -47,41 +49,74 @@
           font-size: 14px;
         }
       }
+
+      &--notice {
+        margin-top: 20px;
+
+        dt {
+          margin-bottom: 10px;
+          font-weight: bold;
+          font-size: 14px;
+          text-align: center;
+        }
+        dd {
+          &:not(:first-child) {
+            margin-top: 4px;
+          }
+
+          &::before {
+            content: '-';
+            margin-right: 4px;
+          }
+        }
+      }
     }
 
     &__content {
       width: 100%;
       padding: 50px;
     }
-  }
-}
-.dim-layer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1000; /* 다른 요소들보다 상위에 위치 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은색 */
-}
 
-.loading-animation {
-  width: 50px;
-  height: 50px;
-  border: 5px solid transparent;
-  border-top-color: #fff; /* 흰색 */
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
+    &__footer {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      font-weight: bold;
+      color: $white;
+      transform: translate(-50%, 30px);
+    }
   }
-  100% {
-    transform: rotate(360deg);
+
+  &__dim {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    &--loading {
+      width: 50px;
+      height: 50px;
+      border: 5px solid transparent;
+      border-top-color: $white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
   }
 }
