@@ -1,0 +1,28 @@
+@import '@/styles/common/colors.scss';
+
+// color
+$primary: var(--primary);
+$green: var(--green);
+$yellow: var(--yellow);
+$bg-dark: var(--bg-dark);
+$bg-grey: var(--bg-grey);
+$bg-blue: var(--bg-blue);
+$bg-lightblue: var(--bg-lightblue);
+
+// border
+$border: var(--border);
+
+// font
+$black: var(--black);
+$white: var(--white);
+$noto: var(--noto);
+$roboto: var(--roboto);
+
+// shadow
+$shadow-l: var(--shadow-l);
+$shadow-s: var(--shadow-s);
+
+// image url
+@function src($folder: 'icons', $filename: '') {
+  @return 'src/assets/#{$folder}/#{$filename}';
+}

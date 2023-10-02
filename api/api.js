@@ -43,7 +43,7 @@ router.post('/getWeekSchedule', async (req, res) => {
 
     const response = await axios.post(
       'https://gw.forbiz.co.kr/schedule/WebMtSchedule/SearchMtScheduleList',
-      { calType, startDate, endDate, mcalSeq, mySchYn },
+      { calType, startDate: '20230925', endDate: '20230929', mcalSeq, mySchYn },
       {
         withCredentials: true,
         headers: {

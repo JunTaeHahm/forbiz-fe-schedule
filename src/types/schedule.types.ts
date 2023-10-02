@@ -20,6 +20,8 @@ interface ScheduleResult {
   title: Set<string>;
 }
 
+type Schedule = Record<string, ScheduleResult>;
+
 interface GetWeekSchedulePayload {
   calType: 'M';
   endDate: string;
@@ -76,6 +78,7 @@ export type {
   WeekSchedule,
   ShareSchedule,
   ScheduleResult,
+  Schedule,
   GetWeekSchedulePayload,
   GetWeekScheduleItem,
   GetWeekScheduleResponse,

@@ -1,0 +1,25 @@
+:root {
+  // color
+  --primary: #4f50e7;
+  --green: #ddf0e9;
+  --yellow: #fff1c4;
+  --bg-dark: #1f1f1f;
+  --bg-grey: #363636;
+  --bg-blue: #525fea;
+  --bg-lightblue: #efeffa;
+
+  // border
+  --border: #e8e8f4;
+
+  // font
+  --black: #212459;
+  --white: #ffffff;
+  --noto: 'Notosans', sans-serif; //국문
+  --roboto: 'Roboto', var(--noto); //영문
+
+  // shadow
+  --shadow-l: 2.8px 2.8px 2.2px rgba(0, 0, 0, 0.02), 6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+    12.5px 12.5px 10px rgba(0, 0, 0, 0.035), 22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+    41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05), 100px 100px 80px rgba(0, 0, 0, 0.07);
+  --shadow-s: 12px 12px 15px 0 #dddddd;
+}

@@ -1,12 +1,6 @@
-import { computed, onMounted, reactive, ref, watch } from 'vue';
+import { Ref, computed, onMounted, reactive, ref, watch } from 'vue';
 import ScheduleService from '@/services/schedules';
-import {
-  FeMember,
-  GetScheduleDetailPayload,
-  ScheduleResult,
-  ShareSchedule,
-  WeekSchedule,
-} from '@/types/schedule.types';
+import { FeMember, GetScheduleDetailPayload, Schedule, ShareSchedule, WeekSchedule } from '@/types/schedule.types';
 import { useCalculateWeek, formatDate } from '@/utils/date';
 import { useCalculateTime, isPublicEndTime, isPublicStartTime } from '@/utils/time';
 import { WORK_TIME } from '@/configs/workTime.config';
@@ -50,6 +44,16 @@ export default function homeComposable() {
       fetches.weekScheduleList === 'wait'
     );
   });
+
+  const checkStatus = (fetch: FetchState) => {
+    if (fetch === 'wait' || fetch === 'ing') {
+      return '🟠';
+    } else if (fetch === 'error') {
+      return '🔴';
+    } else {
+      return '🟢';
+    }
+  };
   // #endregion
 
   // #region 서비스
@@ -63,7 +67,7 @@ export default function homeComposable() {
   const schSeqList = ref<GetScheduleDetailPayload['schSeq']>([]);
 
   // 멤버 리스트
-  const members = computed(() => {
+  const members: Ref<FeMember[]> = computed(() => {
     // if (weekScheduleList.value.length !== 0) {
     //   return [...new Set(weekScheduleList.value.map((schedule) => schedule.createName))].sort();
     // }
@@ -73,7 +77,7 @@ export default function homeComposable() {
   // #endregion
 
   // #region 주간 일정
-  const schedules = ref<Record<string, ScheduleResult>[]>(Array(10).fill({}));
+  const schedules = ref<Schedule[]>(Array(10).fill({}));
 
   const isCompanySchedule = ref<boolean>(false);
   const isFeSchedule = ref<boolean>(false);
@@ -86,7 +90,7 @@ export default function homeComposable() {
       const memberSchedules = newValue.filter((schedule) => schedule.createName === name);
 
       // 빈 객체 생성
-      const result: Record<string, ScheduleResult> = {};
+      const result: Schedule = {};
 
       memberSchedules.forEach((schedule, i, arr) => {
         // [] 사이에 있는 이름으로 프로젝트명 추출
@@ -306,5 +310,5 @@ export default function homeComposable() {
     init();
   });
 
-  return { isLoading, startDate, endDate, members, schedules };
+  return { checkStatus, fetches, isLoading, startDate, endDate, members, schedules };
 }

@@ -1,0 +1,87 @@
+@import '@/styles/common/variable.scss';
+
+.h {
+  &__home {
+    position: absolute;
+    top: 50%;
+    display: flex;
+    margin: 0 100px;
+    border-radius: 50px;
+    background-color: $bg-lightblue;
+    box-shadow: $shadow-l;
+    transform: translate(0, -50%);
+
+    &__header {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      justify-content: center;
+      align-items: center;
+      padding: 50px 25px;
+      border-right: 1px solid $border;
+
+      &--logo {
+        width: 150px;
+        height: auto;
+      }
+
+      &--title {
+        margin-top: 20px;
+        font-size: 28px;
+      }
+
+      &--date {
+        margin-top: 15px;
+        font-size: 14px;
+      }
+
+      &--status {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+
+        span {
+          font-weight: bold;
+          font-size: 14px;
+        }
+      }
+    }
+
+    &__content {
+      width: 100%;
+      padding: 50px;
+    }
+  }
+}
+.dim-layer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000; /* 다른 요소들보다 상위에 위치 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은색 */
+}
+
+.loading-animation {
+  width: 50px;
+  height: 50px;
+  border: 5px solid transparent;
+  border-top-color: #fff; /* 흰색 */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
