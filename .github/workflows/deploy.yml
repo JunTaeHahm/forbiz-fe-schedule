@@ -32,6 +32,9 @@ jobs:
           npm install
           npx playwright install
           sudo npx playwright install-deps
+          
+      - name: List files in dist directory
+        run: ls -al ./dist
 
       # 빌드
       - name: Build Page
