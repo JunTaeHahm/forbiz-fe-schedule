@@ -15,7 +15,7 @@ export default class ScheduleService {
     if (isDevelopment) {
       this.baseUrl = 'http://localhost:3000'; // 개발
     } else {
-      this.baseUrl = 'https://port-0-forbiz-fe-schedule-12fhqa2bln7c6j5b.sel5.cloudtype.app'; // 배포
+      this.baseUrl = 'large-cassandre-juntaehahm.koyeb.app'; // 배포
     }
   }
 

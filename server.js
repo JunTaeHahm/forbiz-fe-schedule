@@ -18,7 +18,7 @@ const httpServer = http.createServer(app);
 // CORS 설정: 개발 환경과 배포 환경의 origin을 설정
 app.use(
   cors({
-    origin: ['https://port-0-forbiz-fe-schedule-12fhqa2bln7c6j5b.sel5.cloudtype.app', 'http://localhost:8000'], // TODO: 배포 후 추가적인 origin 추가 필요
+    origin: ['large-cassandre-juntaehahm.koyeb.app', 'http://localhost:8000'], // TODO: 배포 후 추가적인 origin 추가 필요
     credentials: true,
   }),
 );
