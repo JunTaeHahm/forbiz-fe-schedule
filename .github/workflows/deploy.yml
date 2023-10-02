@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - main
-      
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -15,24 +15,24 @@ jobs:
       # 1. 저장소 체크아웃
       - name: Checkout source code
         uses: actions/checkout@v2
-	
+
       # 2. node.js 환경설정
       - name: Set up Node.js
-        uses: actions/setup-node@main
+        uses: actions/setup-node@v2
         with:
           node-version: 18.15.0
-      
+
       # 3. 패키지 설치
       - name: Install dependencies
         run: npm ci
-      
+
       # 4. playwright 패키지 설치
       - name: Install playwright package
         run: |
           npm install
           npx playwright install
           sudo npx playwright install-deps
-      
+
       # 5. 빌드
       - name: Build Page
         run: npm run build
@@ -42,14 +42,14 @@ jobs:
           VITE_APP_SERVER_BASE_URL: https://JunTaeHahm.github.io/forbiz-fe-schedule/
           USER_ID: jthahm
           USER_PW: !Joontae01
-	  
+
       - name: Start the server
         run: node server.js &
-	  
+
       # 6. playwright 설정
       - name: Setup Playwright
         uses: microsoft/playwright-github-action@v1
-    
+
       # 7. gh-pages로 배포
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
