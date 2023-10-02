@@ -11,7 +11,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-	
     steps:
       # 1. 저장소 체크아웃
       - name: Checkout source code
@@ -39,7 +38,7 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
-	  VITE_APP_NODE_ENV: production
+          VITE_APP_NODE_ENV: production
           VITE_APP_SERVER_BASE_URL: https://JunTaeHahm.github.io/forbiz-fe-schedule/
           USER_ID: jthahm
           USER_PW: !Joontae01
