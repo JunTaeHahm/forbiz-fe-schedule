@@ -15,7 +15,7 @@ export default class ScheduleService {
     if (isDevelopment) {
       this.baseUrl = 'http://localhost:3000'; // 개발
     } else {
-      this.baseUrl = 'large-cassandre-juntaehahm.koyeb.app'; // 배포
+      this.baseUrl = 'https://large-cassandre-juntaehahm.koyeb.app'; // 배포
     }
   }
 

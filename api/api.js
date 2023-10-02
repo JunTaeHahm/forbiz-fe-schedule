@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { chromium } from 'playwright';
+import puppeteer from 'puppeteer';
 import axios from 'axios';
 
 dotenv.config();
@@ -8,28 +8,29 @@ dotenv.config();
 const router = express.Router();
 const { USER_ID, USER_PW } = process.env;
 
-// ID/PW 환경변수에 없으면 에러 발생
 if (!USER_ID || !USER_PW) {
   throw new Error('환경변수의 ID/PW 설정이 필요합니다.');
 }
-
-/**
- * 브라우저 설정 및 쿠키 가져오기
- * @returns cookie
- */
+// console.log(puppeteer.executablePath());
 const setBrowser = async () => {
-  const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({ viewport: { width: 1024, height: 768 }, acceptDownloads: true });
-  const page = await context.newPage();
+  const browser = await puppeteer.launch({
+    headless: 'false',
+    // executablePath: '/usr/bin/chromium',
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
+  });
+  const page = await browser.newPage();
 
+  await page.setViewport({ width: 1024, height: 768 });
   await page.goto('https://gw.forbiz.co.kr/gw/userMain.do');
-  await page.fill('#userId', USER_ID);
-  await page.fill('#userPw', USER_PW);
+  await page.type('#userId', USER_ID);
+  await page.type('#userPw', USER_PW);
   await page.click('.login_submit');
 
-  const cookies = await context.cookies();
+  const cookies = await page.cookies();
   const cookie = cookies.find((v) => v.path === '/gw');
   if (!cookie) throw new Error('Failed to retrieve cookies');
+
+  await browser.close();
 
   return { name: cookie.name, value: cookie.value };
 };

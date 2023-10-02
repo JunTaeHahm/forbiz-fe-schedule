@@ -18,7 +18,7 @@ const httpServer = http.createServer(app);
 // CORS 설정: 개발 환경과 배포 환경의 origin을 설정
 app.use(
   cors({
-    origin: ['large-cassandre-juntaehahm.koyeb.app', 'http://localhost:8000'], // TODO: 배포 후 추가적인 origin 추가 필요
+    origin: '*', // TODO: 배포 후 추가적인 origin 추가 필요
     credentials: true,
   }),
 );
