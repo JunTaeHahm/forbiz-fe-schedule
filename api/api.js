@@ -14,16 +14,14 @@ if (!USER_ID || !USER_PW) {
 // console.log(puppeteer.executablePath());
 const setBrowser = async () => {
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     // headless: 'new',
     // executablePath: '/usr/bin/chromium-browser',
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'],
-    ignoreHTTPSErrors: true,
   });
   const page = await browser.newPage();
 
   await page.setViewport({ width: 1024, height: 768 });
-  await page.setDefaultNavigationTimeout(0);
   await page.goto('https://gw.forbiz.co.kr/gw/userMain.do');
   await page.type('#userId', USER_ID);
   await page.type('#userPw', USER_PW);
