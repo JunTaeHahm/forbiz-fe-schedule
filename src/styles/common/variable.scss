@@ -23,6 +23,3 @@ $shadow-l: var(--shadow-l);
 $shadow-s: var(--shadow-s);
 
 // image url
-@function src($folder: 'icons', $filename: '') {
-  @return 'src/assets/#{$folder}/#{$filename}';
-}

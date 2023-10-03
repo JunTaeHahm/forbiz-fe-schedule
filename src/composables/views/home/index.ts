@@ -1,9 +1,9 @@
 import { Ref, computed, onMounted, reactive, ref, watch } from 'vue';
+import { WORK_TIME } from '@/configs/workTime.config';
 import ScheduleService from '@/services/schedules';
 import { FeMember, GetScheduleDetailPayload, Schedule, ShareSchedule, WeekSchedule } from '@/types/schedule.types';
 import { useCalculateWeek, formatDate } from '@/utils/date';
 import { useCalculateTime, isPublicEndTime, isPublicStartTime } from '@/utils/time';
-import { WORK_TIME } from '@/configs/workTime.config';
 
 export default function homeComposable() {
   // #region 이번주 시작일과 종료일
@@ -12,6 +12,7 @@ export default function homeComposable() {
 
   // #region fetches
   type FetchKey = 'getWeekSchedule' | 'weekScheduleList' | 'getDetailSchedule';
+
   type FetchState = 'wait' | 'ing' | 'success' | 'error';
 
   type Fetches = Record<FetchKey, FetchState>;

@@ -4,6 +4,8 @@ module.exports = {
     node: true,
   },
 
+  plugins: ['import'],
+
   extends: [
     'eslint:recommended',
     '@vue/typescript/recommended',
@@ -12,53 +14,75 @@ module.exports = {
     'plugin:prettier/recommended',
     '@vue/eslint-config-prettier',
   ],
-
   parserOptions: {
-    ecmaVersion: 2023,
+    ecmaVersion: 2020,
     parser: '@typescript-eslint/parser',
   },
 
   rules: {
-    'prettier/prettier': [
+    'import/order': [
       'warn',
       {
-        singleQuote: true,
-        semi: true,
-        useTabs: false,
-        printWidth: 120,
-        trailingComma: 'all',
-        tabWidth: 2,
-        vueIndentScriptAndStyle: true,
-        endOfLine: 'auto',
-        singleAttributePerLine: true,
-        eslintIntegration: true,
-        bracketSpacing: true,
-        importOrder: [
-          '^vue(.*)$',
-          '<THIRD_PARTY_MODULES>',
-          '^@/services/(.*)$',
-          '^@/utils/(.*)$',
-          '^@/configs/(.*)$',
-          '^@/composables/(.*)$',
-          '^@/components/(.*)$',
-          '^@/views/(.*)$',
-          '^@/stores/(.*)$',
-          '^@/constants/(.*)$',
-          '^@/types/(.*)$',
-          '^@/styles/(.*)$',
-          '^[./]',
+        groups: ['external', 'internal'],
+        pathGroups: [
+          {
+            pattern: 'vue',
+            group: 'external',
+            position: 'before',
+          },
+          {
+            pattern: '@/services/**',
+            group: 'internal',
+          },
+          {
+            pattern: '@/utils/**',
+            group: 'internal',
+          },
+          {
+            pattern: '@/configs/**',
+            group: 'internal',
+          },
+          {
+            pattern: '@/composables/**',
+            group: 'internal',
+          },
+          {
+            pattern: '@/components/**',
+            group: 'internal',
+          },
+          {
+            pattern: '@/views/**',
+            group: 'internal',
+          },
+          {
+            pattern: '@/stores/**',
+            group: 'internal',
+          },
+          {
+            pattern: '@/constants/**',
+            group: 'internal',
+          },
+          {
+            pattern: '@/types/**',
+            group: 'internal',
+          },
+          {
+            pattern: '@/styles/**',
+            group: 'internal',
+          },
+          {
+            pattern: '[./]**',
+            group: 'internal',
+          },
         ],
-        // 각 범주마다 공백 한줄 추가
-        importOrderSeparation: false,
-        // 설정한 범주 내에서 정렬 여부
-        importOrderSortSpecifiers: true,
-      },
-      {
-        usePrettierrc: false,
+        pathGroupsExcludedImportTypes: ['builtin'],
+        // 'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
       },
     ],
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/no-explicit-any': 'warn',
