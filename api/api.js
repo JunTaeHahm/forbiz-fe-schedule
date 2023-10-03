@@ -1,7 +1,7 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import puppeteer from 'puppeteer';
 import axios from 'axios';
+import dotenv from 'dotenv';
+import express from 'express';
+import puppeteer from 'puppeteer';
 
 dotenv.config();
 
@@ -14,9 +14,11 @@ if (!USER_ID || !USER_PW) {
 // console.log(puppeteer.executablePath());
 const setBrowser = async () => {
   const browser = await puppeteer.launch({
-    headless: 'false',
-    // executablePath: '/usr/bin/chromium',
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
+    headless: 'new',
+    // executablePath: '/usr/bin/chromium-browser',
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'],
+    ignoreHTTPSErrors: true,
+    timeout: 60000,
   });
   const page = await browser.newPage();
 

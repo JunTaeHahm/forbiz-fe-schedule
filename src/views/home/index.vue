@@ -1,9 +1,15 @@
 <template>
   <div
-    v-if="isLoading"
+    v-if="isLoading && !isError"
     class="h__dim"
   >
     <div class="h__dim--loading"></div>
+  </div>
+  <div
+    v-if="isError"
+    class="h__dim"
+  >
+    <div class="h__dim--error">네트워크 오류</div>
   </div>
   <div class="h__home">
     <div class="h__home__header">
@@ -23,9 +29,9 @@
       </div>
       <dl class="h__home__header--notice">
         <dt>📌 전달사항</dt>
-        <dd>실패한 API가 있으면 "새로고침" 해주세요.</dd>
-        <dd>주말근무 / 새벽근무 일정 계산은 개발중입니다.</dd>
-        <dd>버그 및 피드백은 언제나 환영입니다.</dd>
+        <dd>계산이 일치하지 않은 경우 말씀해주세요.</dd>
+        <dd>주말/새벽 일정 계산은 개발중입니다.</dd>
+        <dd>버그 및 피드백은 언제나 환영합니다.</dd>
       </dl>
     </div>
 
@@ -49,7 +55,7 @@
   import homeComposable from '@/composables/views/home';
   import { formatDate } from '@/utils/date';
 
-  const { checkStatus, fetches, isLoading, startDate, endDate, members, schedules } = homeComposable();
+  const { fetches, isLoading, isError, checkStatus, startDate, endDate, members, schedules } = homeComposable();
 </script>
 
 <style scoped lang="scss">

@@ -1,4 +1,4 @@
-import { Ref, computed, onMounted, reactive, ref, watch } from 'vue';
+import { Ref, computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { WORK_TIME } from '@/configs/workTime.config';
 import ScheduleService from '@/services/schedules';
 import { FeMember, GetScheduleDetailPayload, Schedule, ShareSchedule, WeekSchedule } from '@/types/schedule.types';
@@ -43,6 +43,14 @@ export default function homeComposable() {
       fetches.getWeekSchedule === 'wait' ||
       fetches.weekScheduleList === 'ing' ||
       fetches.weekScheduleList === 'wait'
+    );
+  });
+
+  const isError = computed(() => {
+    return (
+      fetches.getDetailSchedule === 'error' ||
+      fetches.getWeekSchedule === 'error' ||
+      fetches.weekScheduleList === 'error'
     );
   });
 
@@ -301,6 +309,8 @@ export default function homeComposable() {
   };
   // #endregion
 
+  let intervalId: number | undefined; // 타이머 ID 저장을 위한 변수
+
   const init = async () => {
     await getWeekSchedule();
 
@@ -309,7 +319,23 @@ export default function homeComposable() {
 
   onMounted(() => {
     init();
+
+    // 한 시간마다 getWeekSchedule 함수 실행
+    intervalId = window.setInterval(
+      async () => {
+        await getWeekSchedule();
+      },
+      1000 * 60,
+      // 1000 * 60 * 60,
+    ); // 1000ms * 60s * 60m = 1 hour
   });
 
-  return { checkStatus, fetches, isLoading, startDate, endDate, members, schedules };
+  onBeforeUnmount(() => {
+    // 컴포넌트 언마운트 시 타이머 해제
+    if (intervalId !== undefined) {
+      clearInterval(intervalId);
+    }
+  });
+
+  return { fetches, isLoading, isError, checkStatus, startDate, endDate, members, schedules };
 }
