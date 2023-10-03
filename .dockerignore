@@ -3,3 +3,4 @@ npm-debug.log
 dist
 .github
 .vscode
+.export

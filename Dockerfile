@@ -10,8 +10,9 @@ RUN apt-get update \
     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
     --no-install-recommends
 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium
+ENV NODE_ENV=production
+ENV VITE_APP_NODE_ENV=production
+ENV VITE_APP_SERVER_BASE_URL=https://large-cassandre-juntaehahm.koyeb.app
 
 # 작업경로 설정
 WORKDIR app/
