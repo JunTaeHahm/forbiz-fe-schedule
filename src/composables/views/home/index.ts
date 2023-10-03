@@ -325,9 +325,8 @@ export default function homeComposable() {
       async () => {
         await getWeekSchedule();
       },
-      1000 * 60,
-      // 1000 * 60 * 60,
-    ); // 1000ms * 60s * 60m = 1 hour
+      1000 * 60 * 30,
+    ); // 1000ms * 60s * 30m = 30 minutes
   });
 
   onBeforeUnmount(() => {

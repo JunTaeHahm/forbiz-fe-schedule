@@ -14,8 +14,7 @@ if (!USER_ID || !USER_PW) {
 // console.log(puppeteer.executablePath());
 const setBrowser = async () => {
   const browser = await puppeteer.launch({
-    headless: true,
-    // headless: 'new',
+    headless: 'new',
     // executablePath: '/usr/bin/chromium-browser',
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu'],
   });
