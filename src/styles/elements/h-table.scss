@@ -25,6 +25,8 @@
     &__column {
       z-index: 10;
       width: calc(100% / 5);
+      max-width: 250px;
+      min-width: 250px;
       text-align: center;
 
       &--member {
@@ -50,6 +52,8 @@
     &__column {
       position: relative;
       width: calc(100% / 5);
+      max-width: 250px;
+      min-width: 250px;
       margin-top: 15px;
       border-radius: 20px;
       box-shadow: $shadow-s;
@@ -120,6 +124,23 @@
           content: '·';
           display: inline-block;
           margin-right: 4px;
+          font-weight: bold;
+        }
+      }
+
+      &--total {
+        position: absolute;
+        top: -18px;
+        right: 18px;
+        font-size: 14px;
+
+        &.lack {
+          span {
+            color: red;
+          }
+        }
+
+        span {
           font-weight: bold;
         }
       }

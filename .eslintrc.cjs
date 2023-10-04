@@ -4,8 +4,6 @@ module.exports = {
     node: true,
   },
 
-  plugins: ['import'],
-
   extends: [
     'eslint:recommended',
     '@vue/typescript/recommended',
@@ -20,67 +18,23 @@ module.exports = {
   },
 
   rules: {
-    'import/order': [
+    'prettier/prettier': [
       'warn',
       {
-        groups: ['external', 'internal'],
-        pathGroups: [
-          {
-            pattern: 'vue',
-            group: 'external',
-            position: 'before',
-          },
-          {
-            pattern: '@/services/**',
-            group: 'internal',
-          },
-          {
-            pattern: '@/utils/**',
-            group: 'internal',
-          },
-          {
-            pattern: '@/configs/**',
-            group: 'internal',
-          },
-          {
-            pattern: '@/composables/**',
-            group: 'internal',
-          },
-          {
-            pattern: '@/components/**',
-            group: 'internal',
-          },
-          {
-            pattern: '@/views/**',
-            group: 'internal',
-          },
-          {
-            pattern: '@/stores/**',
-            group: 'internal',
-          },
-          {
-            pattern: '@/constants/**',
-            group: 'internal',
-          },
-          {
-            pattern: '@/types/**',
-            group: 'internal',
-          },
-          {
-            pattern: '@/styles/**',
-            group: 'internal',
-          },
-          {
-            pattern: '[./]**',
-            group: 'internal',
-          },
-        ],
-        pathGroupsExcludedImportTypes: ['builtin'],
-        // 'newlines-between': 'always',
-        alphabetize: {
-          order: 'asc',
-          caseInsensitive: true,
-        },
+        singleQuote: true,
+        semi: true,
+        useTabs: false,
+        printWidth: 120,
+        trailingComma: 'all',
+        tabWidth: 2,
+        vueIndentScriptAndStyle: true,
+        endOfLine: 'auto',
+        singleAttributePerLine: true,
+        eslintIntegration: true,
+        bracketSpacing: true,
+      },
+      {
+        usePrettierrc: true,
       },
     ],
     '@typescript-eslint/no-var-requires': 'off',

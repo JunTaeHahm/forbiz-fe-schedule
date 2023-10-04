@@ -1,9 +1,9 @@
-import cors from 'cors';
-import express from 'express';
-import apiRouter from './api/api.js';
 import http from 'http';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
+import express from 'express';
+import apiRouter from './api/api.js';
 
 // ES module에서 __dirname 사용하는 법
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
@@ -11,6 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 // Express 앱 생성
 const app = express();
+const PORT = 3000;
 
 // HTTP 서버 생성
 const httpServer = http.createServer(app);
@@ -38,13 +39,17 @@ app.use(express.urlencoded({ extended: true }));
 // API 라우터 설정
 app.use('/api', apiRouter);
 
+//
+app.get('/health', (req, res) => {
+  res.status(200).send({ status: 'Healthy' });
+});
+
 // 모든 기타 요청은 index.html로 리다이렉트
 app.get('*', (req, res) => {
   res.sendFile(path.join(buildDirectory, 'index.html'));
 });
 
 // 서버 시작
-const PORT = process.env.PORT || 3000; // 환경 변수에 PORT가 없는 경우, 기본적으로 3000 포트 사용
 httpServer.listen(PORT, () => {
   console.log(`Express:: ${PORT} 포트 오픈`);
 });

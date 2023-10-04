@@ -3,13 +3,22 @@
     v-if="isLoading && !isError"
     class="h__dim"
   >
+    <div class="blobs"></div>
     <div class="h__dim--loading"></div>
   </div>
   <div
     v-if="isError"
     class="h__dim"
   >
-    <div class="h__dim--error">네트워크 오류</div>
+    <div class="h__dim--error">
+      <span>네트워크 오류</span>
+      <button
+        type="button"
+        @click="handleRefresh"
+      >
+        새로고침
+      </button>
+    </div>
   </div>
   <div class="h__home">
     <div class="h__home__header">
@@ -55,7 +64,8 @@
   import homeComposable from '@/composables/views/home';
   import { formatDate } from '@/utils/date';
 
-  const { fetches, isLoading, isError, checkStatus, startDate, endDate, members, schedules } = homeComposable();
+  const { fetches, isLoading, isError, checkStatus, startDate, endDate, members, schedules, handleRefresh } =
+    homeComposable();
 </script>
 
 <style scoped lang="scss">

@@ -202,6 +202,13 @@ export default function homeComposable() {
   });
   // #endregion
 
+  // #region
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
+  // #endregion
+
   // #region api
   /** 주간일정 가져오기 */
   const getWeekSchedule = async () => {
@@ -319,14 +326,6 @@ export default function homeComposable() {
 
   onMounted(() => {
     init();
-
-    // 한 시간마다 getWeekSchedule 함수 실행
-    intervalId = window.setInterval(
-      async () => {
-        await getWeekSchedule();
-      },
-      1000 * 60 * 30,
-    ); // 1000ms * 60s * 30m = 30 minutes
   });
 
   onBeforeUnmount(() => {
@@ -336,5 +335,5 @@ export default function homeComposable() {
     }
   });
 
-  return { fetches, isLoading, isError, checkStatus, startDate, endDate, members, schedules };
+  return { fetches, isLoading, isError, checkStatus, startDate, endDate, members, schedules, handleRefresh };
 }

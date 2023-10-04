@@ -2,15 +2,15 @@
 
 .h {
   &__home {
-    position: absolute;
+    position: relative;
     top: 50%;
-    left: 50%;
     display: flex;
-    width: calc(100% - 200px);
+    width: max-content;
+    margin: 0 100px;
     border-radius: 50px;
     background-color: $bg-lightblue;
     box-shadow: $shadow-l;
-    transform: translate(-50%, -50%);
+    transform: translate(0, -50%);
 
     &__header {
       display: flex;
@@ -119,10 +119,38 @@
       animation: spin 1s linear infinite;
     }
 
-    &--error{
-      font-weight: bold;
-      font-size: 16px;
-      color: $white;
+    &--error {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      span {
+        font-weight: bold;
+        font-size: 16px;
+        color: $white;
+      }
+
+      button {
+        padding: 5px 10px;
+        border: 2px solid $bg-blue;
+        border-radius: 50px;
+        font-weight: bold;
+        color: $black;
+        background-color: $white;
+        box-shadow:
+          20px 20px 60px #bebebe,
+          -20px -20px 60px #ffffff;
+        cursor: pointer;
+
+        transition: all 0.4s;
+
+        &:hover {
+          color: $white;
+          background-color: $bg-blue;
+          box-shadow: none;
+          transition: all 0.4s;
+        }
+      }
     }
   }
 }

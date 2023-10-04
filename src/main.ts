@@ -1,8 +1,8 @@
 import { createApp } from 'vue';
+import axios from 'axios';
 import App from './App.vue';
 import router from './router/index';
 import './styles/app.scss';
-import axios from 'axios';
 
 createApp(App).use(router).mount('#app');
 
