@@ -5,7 +5,7 @@
     width: 100%;
     border-collapse: collapse;
 
-    &:not(:first-child) {
+    &:not(:first-of-type) {
       margin-top: 40px;
     }
   }

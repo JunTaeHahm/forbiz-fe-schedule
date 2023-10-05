@@ -4,6 +4,7 @@ import ScheduleService from '@/services/schedules';
 import { FeMember, GetScheduleDetailPayload, Schedule, ShareSchedule, WeekSchedule } from '@/types/schedule.types';
 import { useCalculateWeek, formatDate } from '@/utils/date';
 import { useCalculateTime, isPublicEndTime, isPublicStartTime } from '@/utils/time';
+import { getProjectName } from '@/utils/regexp';
 
 export default function homeComposable() {
   // #region 이번주 시작일과 종료일
@@ -24,6 +25,9 @@ export default function homeComposable() {
   });
 
   const fetch = {
+    wait: (key: FetchKey) => {
+      fetches[key] = 'wait';
+    },
     start: (key: FetchKey) => {
       fetches[key] = 'ing';
     },
@@ -56,11 +60,11 @@ export default function homeComposable() {
 
   const checkStatus = (fetch: FetchState) => {
     if (fetch === 'wait' || fetch === 'ing') {
-      return '🟠';
+      return '🟠 Loading';
     } else if (fetch === 'error') {
-      return '🔴';
+      return '🔴 Error';
     } else {
-      return '🟢';
+      return '🟢 Success';
     }
   };
   // #endregion
@@ -102,15 +106,9 @@ export default function homeComposable() {
       const result: Schedule = {};
 
       memberSchedules.forEach((schedule, i, arr) => {
-        // [] 사이에 있는 이름으로 프로젝트명 추출
-        const match = schedule.schTitle.match(/\[(.*?)\]/);
-
-        if (!match) return;
-
         // 멤버명, 프로젝트명, 일정제목
         const memberName: FeMember = schedule.createName;
-        const projectName = `[${match[1]}]`;
-        const title = match.input?.replace(projectName, '').trim() ?? '';
+        const { projectName, title } = getProjectName(schedule.schTitle);
 
         // 전사일정, FE일정 여부
         isCompanySchedule.value = projectName === '[전사]' || projectName === '[전사공통]';
@@ -241,6 +239,7 @@ export default function homeComposable() {
   const getDetailSchedule = async () => {
     try {
       fetch.start('getDetailSchedule');
+      fetch.wait('weekScheduleList');
 
       const response = await scheduleService.getDetailSchedule({
         detailYn: 'Y',
@@ -249,10 +248,12 @@ export default function homeComposable() {
       });
 
       fetch.isSuccess('getDetailSchedule');
+      fetch.isSuccess('weekScheduleList');
 
       return response;
     } catch (error) {
       fetch.isError('getDetailSchedule');
+      fetch.isError('weekScheduleList');
       console.error(error);
       throw error;
     }
@@ -272,6 +273,7 @@ export default function homeComposable() {
         // 공유일정 없을 경우 return
         if (schSeqList.value.length === 0) {
           fetch.isSuccess('getDetailSchedule');
+
           return;
         }
 
@@ -284,26 +286,29 @@ export default function homeComposable() {
           const userListIndices = userList.map((user) => members.value.indexOf(user));
 
           // 인덱스 번호에 해당되는 멤버들의 일정에 time, title 추가
-          userListIndices.forEach((i) => {
-            if (schedules.value[i]) {
-              const projectName = Object.keys(schedules.value[i])[0];
-              const title = schedule.schTitle.replace(projectName, '').trim() ?? '';
+          userListIndices.forEach((index) => {
+            if (schedules.value[index]) {
+              const { projectName, title } = getProjectName(schedule.schTitle, schedule.schTitle);
 
               // 일정시간, OT여부, OT시간 가져오기
               const { time, hasOverTime, overTime } = useCalculateTime({
                 startDate: formatDate(schedule.startDate),
                 endDate: formatDate(schedule.endDate),
-                createName: members.value[i],
+                createName: members.value[index],
               } as WeekSchedule);
 
-              if (hasOverTime) {
+              if (!schedules.value[index][projectName]) {
+                schedules.value[index][projectName] = { time: 0, overTime: 0, title: new Set() };
+              }
+
+              if (hasOverTime || projectName === '[FE]') {
                 // 공유일정이 OT에 포함되는 경우
-                schedules.value[i][projectName].time! += time - overTime;
-                schedules.value[i][projectName].overTime! += overTime;
-                schedules.value[i][projectName].title?.add(title);
+                schedules.value[index][projectName].time! += time - overTime;
+                schedules.value[index][projectName].overTime! += overTime;
+                schedules.value[index][projectName].title?.add(title);
               } else {
                 // 공유일정이 근무시간 내에 포함되는 경우
-                schedules.value[i][projectName].time += time;
+                schedules.value[index][projectName].time += time;
               }
             }
           });

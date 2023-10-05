@@ -2,62 +2,68 @@
 
 .h {
   &__home {
-    position: relative;
-    top: 50%;
     display: flex;
+    flex-direction: column;
     width: max-content;
-    margin: 0 100px;
     border-radius: 50px;
     background-color: $bg-lightblue;
     box-shadow: $shadow-l;
-    transform: translate(0, -50%);
 
     &__header {
       display: flex;
-      flex-direction: column;
       flex-shrink: 0;
       justify-content: center;
+      gap: 30px;
       align-items: center;
-      padding: 50px 25px;
-      border-right: 1px solid $border;
+      padding: 25px 0;
+      border-bottom: 1px solid $border;
 
       &--logo {
         width: 150px;
         height: auto;
+        margin-bottom: 15px;
       }
 
       &--title {
-        margin-top: 20px;
+        // margin-top: 20px;
         font-size: 28px;
       }
 
-      &--date {
-        margin-top: 15px;
-        font-size: 14px;
+      &--content {
+        display: flex;
+        gap: 30px;
+        margin-left: 100px;
       }
 
       &--status {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        margin-top: 20px;
+        margin-top: 30px;
 
         span {
           font-weight: bold;
           font-size: 14px;
         }
+
+        .wrap {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-top: 10px;
+
+          div::before {
+            content: '-';
+            margin-right: 4px;
+          }
+        }
       }
 
       &--notice {
-        margin-top: 20px;
+        margin-top: 30px;
 
         dt {
           margin-bottom: 10px;
           font-weight: bold;
           font-size: 14px;
-          text-align: center;
+          // text-align: center;
         }
         dd {
           &:not(:first-child) {
@@ -73,17 +79,18 @@
     }
 
     &__content {
+      position: relative;
       width: 100%;
       padding: 50px;
-    }
 
-    &__footer {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      font-weight: bold;
-      color: $white;
-      transform: translate(-50%, 30px);
+      &--footer {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        font-weight: bold;
+        color: $white;
+        transform: translate(-50%, 30px);
+      }
     }
   }
 
