@@ -1,5 +1,5 @@
 # node 버전 설정
-FROM node:18.15.0
+FROM node:18.15.0-slim AS build
 
 # 패키지 파일들을 복사
 COPY package*.json ./
@@ -36,3 +36,5 @@ RUN npm run build  # 앱 빌드
 
 # 서버 시작
 CMD ["node", "server.js"]
+
+# pm2 설정 및 로그 확인 서비스 추가
