@@ -8,7 +8,7 @@ dayjs.extend(utc);
  * @param d 포맷할 날짜 string
  * @returns YYYY-MM-DD HH:mm:ss
  */
-export const formatDate = (d: Date | string, type: 'date' | 'api' | 'kor' = 'date') => {
+export const formatDate = (d: Date | string, type: 'date' | 'api' = 'date', useUtc: boolean = true) => {
   if (null === d || undefined === d || '' === d) return '';
 
   const date = new Date(d);
@@ -20,10 +20,9 @@ export const formatDate = (d: Date | string, type: 'date' | 'api' | 'kor' = 'dat
   switch (type) {
     case 'api':
       return `${year}${month}${day}`;
-    case 'kor':
-      return `${year}년 ${month}월 ${day}일`;
     default:
-      return dayjs.utc(d).format('YYYY-MM-DD HH:mm:ss');
+      if (useUtc) return dayjs.utc(d).format('YYYY-MM-DD HH:mm:ss');
+      else return dayjs(d).format('YYYY-MM-DD HH:mm:ss');
   }
 };
 
@@ -70,8 +69,8 @@ export const useCalculateWeek = () => {
   friday.setDate(friday.getDate() + 4);
   friday.setHours(23, 59, 59, 999); // 금요일의 시간을 23시 59분 59초로 설정
 
-  const startDate = formatDate(monday);
-  const endDate = formatDate(friday);
+  const startDate = formatDate(monday, 'date', false);
+  const endDate = formatDate(friday, 'date', false);
 
   return { startDate, endDate };
 };

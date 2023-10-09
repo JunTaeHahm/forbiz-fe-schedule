@@ -8,13 +8,15 @@
     border-radius: 50px;
     background-color: $bg-lightblue;
     box-shadow: $shadow-l;
+    margin: 150px 0 80px;
 
     &__header {
+      position: relative;
       display: flex;
       flex-shrink: 0;
       justify-content: center;
-      gap: 30px;
       align-items: center;
+      gap: 30px;
       padding: 25px 0;
       border-bottom: 1px solid $border;
 
@@ -22,6 +24,7 @@
         width: 150px;
         height: auto;
         margin-bottom: 15px;
+        margin-right: 100px;
       }
 
       &--title {
@@ -73,6 +76,62 @@
           &::before {
             content: '-';
             margin-right: 4px;
+          }
+        }
+      }
+
+      &--week {
+        position: absolute;
+        top: -90px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        &--date {
+          padding: 10px 20px;
+          border-radius: 10px;
+          font-weight: bold;
+          font-size: 20px;
+          background-color: $bg-lightblue;
+        }
+
+        .btns {
+          display: flex;
+          justify-content: center;
+          gap: 15px;
+        }
+
+        &--button {
+          display: flex;
+          align-items: center;
+          padding: 5px 10px;
+          border-radius: 5px;
+          font-weight: bold;
+          background-color: $bg-lightblue;
+          cursor: pointer;
+
+          &:first-child {
+            &::before {
+              content: '';
+              display: inline-block;
+              width: 10px;
+              height: 10px;
+              margin-right: 4px;
+              vertical-align: middle;
+              background: url('../../../assets/icons/icon_prev.svg') no-repeat center center;
+            }
+          }
+
+          &:last-child {
+            &::after {
+              content: '';
+              display: inline-block;
+              width: 10px;
+              height: 10px;
+              margin-left: 4px;
+              vertical-align: middle;
+              background: url('../../../assets/icons/icon_next.svg') no-repeat center center;
+            }
           }
         }
       }

@@ -30,6 +30,7 @@
         </figure>
         FE Schedule
       </h1>
+
       <div class="h__home__header--content">
         <dl class="h__home__header--status">
           <span>🌐 로딩상태</span>
@@ -48,9 +49,38 @@
         <dl class="h__home__header--notice">
           <dt>📌 전달사항</dt>
           <dd>계산이 일치하지 않은 경우 말씀해주세요.</dd>
-          <dd>주말/새벽 일정 계산은 개발중입니다.</dd>
+          <dd>새벽 일정 계산은 개발중입니다.</dd>
           <dd>버그 및 피드백은 언제나 환영합니다.</dd>
         </dl>
+      </div>
+
+      <div class="h__home__header--week">
+        <div class="h__home__header--week--date">
+          {{ `${startDate.slice(2, 11)} (월) - ${endDate.slice(2, 11)} (금)` }}
+        </div>
+        <div class="btns">
+          <button
+            class="h__home__header--week--button"
+            type="button"
+            @click="handlePrevWeek"
+          >
+            <span>이전</span>
+          </button>
+          <button
+            class="h__home__header--week--button"
+            type="button"
+            @click="handleThisWeek"
+          >
+            <span>이번주</span>
+          </button>
+          <button
+            class="h__home__header--week--button"
+            type="button"
+            @click="handleNextWeek"
+          >
+            <span>다음</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -72,7 +102,23 @@
   import HTable from '@/components/elements/h-table.vue';
   import homeComposable from '@/composables/views/home';
 
-  const { fetches, isLoading, isError, checkStatus, members, schedules, handleRefresh } = homeComposable();
+  const {
+    startDate,
+    endDate,
+
+    fetches,
+    isLoading,
+    isError,
+    checkStatus,
+
+    members,
+    schedules,
+
+    handleRefresh,
+    handlePrevWeek,
+    handleThisWeek,
+    handleNextWeek,
+  } = homeComposable();
 </script>
 
 <style scoped lang="scss">

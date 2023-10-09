@@ -5,10 +5,13 @@ import { FeMember, GetScheduleDetailPayload, Schedule, ShareSchedule, WeekSchedu
 import { useCalculateWeek, formatDate } from '@/utils/date';
 import { useCalculateTime, isPublicEndTime, isPublicStartTime } from '@/utils/time';
 import { getProjectName } from '@/utils/regexp';
+import dayjs from 'dayjs';
 
 export default function homeComposable() {
   // #region 이번주 시작일과 종료일
-  const { startDate, endDate } = useCalculateWeek();
+  const startDate = ref(useCalculateWeek().startDate);
+  const endDate = ref(useCalculateWeek().endDate);
+
   // #endregion
 
   // #region fetches
@@ -201,8 +204,33 @@ export default function homeComposable() {
   // #endregion
 
   // #region
+  /** 새로고침 */
   const handleRefresh = () => {
     window.location.reload();
+  };
+
+  /** 지난주 검색 */
+  const handlePrevWeek = () => {
+    startDate.value = dayjs(startDate.value).subtract(7, 'day').format('YYYY-MM-DD');
+    endDate.value = dayjs(endDate.value).subtract(7, 'day').format('YYYY-MM-DD');
+
+    getWeekSchedule();
+  };
+
+  /** 이번주 검색 */
+  const handleThisWeek = () => {
+    startDate.value = useCalculateWeek().startDate;
+    endDate.value = useCalculateWeek().endDate;
+
+    getWeekSchedule();
+  };
+
+  /** 다음주 검색 */
+  const handleNextWeek = () => {
+    startDate.value = dayjs(startDate.value).add(7, 'day').format('YYYY-MM-DD');
+    endDate.value = dayjs(endDate.value).add(7, 'day').format('YYYY-MM-DD');
+
+    getWeekSchedule();
   };
 
   // #endregion
@@ -215,17 +243,19 @@ export default function homeComposable() {
 
       const response = await scheduleService.getWeekSchedule({
         calType: 'M',
-        startDate: formatDate(startDate, 'api'),
-        endDate: formatDate(endDate, 'api'),
+        startDate: formatDate(startDate.value, 'api'),
+        endDate: formatDate(endDate.value, 'api'),
         mcalSeq: '125',
         mySchYn: 'N',
       });
 
-      weekScheduleList.value = response.map((schedule) => ({
-        ...schedule,
-        startDate: formatDate(schedule.startDate),
-        endDate: formatDate(schedule.endDate),
-      }));
+      weekScheduleList.value = response.map((schedule) => {
+        return {
+          ...schedule,
+          startDate: formatDate(schedule.startDate),
+          endDate: formatDate(schedule.endDate),
+        };
+      });
 
       fetch.isSuccess('getWeekSchedule');
     } catch (error) {
@@ -315,6 +345,7 @@ export default function homeComposable() {
         });
       },
       {
+        deep: true,
         immediate: true,
       },
     );
@@ -340,5 +371,21 @@ export default function homeComposable() {
     }
   });
 
-  return { fetches, isLoading, isError, checkStatus, startDate, endDate, members, schedules, handleRefresh };
+  return {
+    startDate,
+    endDate,
+
+    fetches,
+    isLoading,
+    isError,
+    checkStatus,
+
+    members,
+    schedules,
+
+    handleRefresh,
+    handlePrevWeek,
+    handleThisWeek,
+    handleNextWeek,
+  };
 }
