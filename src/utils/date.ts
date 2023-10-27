@@ -61,16 +61,18 @@ export const useCalculateWeek = () => {
   const currentDay = today.getDay();
 
   const monday = new Date(today);
-  const friday = new Date(monday);
+  const friday = new Date(today);
 
-  monday.setDate(monday.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
+  monday.setDate(today.getDate() - (currentDay === 0 ? 6 : currentDay - 1));
   monday.setHours(0, 0, 0, 0); // 월요일의 시간을 00시 00분 00초로 설정
 
-  friday.setDate(friday.getDate() + 4);
+  friday.setDate(today.getDate() + (5 - currentDay));
   friday.setHours(23, 59, 59, 999); // 금요일의 시간을 23시 59분 59초로 설정
 
   const startDate = formatDate(monday, 'date', false);
+  console.log('startDate: ', startDate);
   const endDate = formatDate(friday, 'date', false);
+  console.log('endDate: ', endDate);
 
   return { startDate, endDate };
 };
