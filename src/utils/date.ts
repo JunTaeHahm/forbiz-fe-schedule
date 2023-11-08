@@ -70,9 +70,7 @@ export const useCalculateWeek = () => {
   friday.setHours(23, 59, 59, 999); // 금요일의 시간을 23시 59분 59초로 설정
 
   const startDate = formatDate(monday, 'date', false);
-  console.log('startDate: ', startDate);
   const endDate = formatDate(friday, 'date', false);
-  console.log('endDate: ', endDate);
 
   return { startDate, endDate };
 };

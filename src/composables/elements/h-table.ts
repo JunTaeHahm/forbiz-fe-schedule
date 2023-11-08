@@ -1,16 +1,11 @@
-import { FeMember, Schedule, ScheduleResult } from '@/types/schedule.types';
+import { MemberRecord } from '@/types/schedule.types';
 import { PropType, toRefs } from 'vue';
 
 interface Props {
-  members: FeMember[];
-  schedules: Schedule[];
+  schedules: MemberRecord;
 }
 
 const props = {
-  members: {
-    type: [] as PropType<Props['members']>,
-    default: () => [],
-  },
   schedules: {
     type: [] as PropType<Props['schedules']>,
     default: () => [],
@@ -18,8 +13,6 @@ const props = {
 };
 
 export default function hTableComposable(props: Props) {
-  const { members, schedules } = toRefs(props);
-
   const copySchedule = async ($event: Event) => {
     const text = ($event.target as HTMLElement).parentElement?.innerText;
 
@@ -34,11 +27,7 @@ export default function hTableComposable(props: Props) {
     }
   };
 
-  const shouldShowTitle = (projectName: string, data: ScheduleResult) => {
-    return data.overTime || ['[FE]', '[전사]', '[전사공통]'].includes(projectName);
-  };
-
-  return { members, schedules, copySchedule, shouldShowTitle };
+  return { copySchedule };
 }
 
 export { props as hTableProps };

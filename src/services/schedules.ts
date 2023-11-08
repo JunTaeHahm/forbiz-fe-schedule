@@ -1,9 +1,4 @@
-import {
-  GetScheduleDetailPayload,
-  GetScheduleDetailResponse,
-  GetWeekSchedulePayload,
-  GetWeekScheduleResponse,
-} from '@/types/schedule.types';
+import { GetWeekScheduleResponse } from '@/types/schedule.types';
 import axios from 'axios';
 
 const isDevelopment = import.meta.env.VITE_APP_NODE_ENV !== 'production';
@@ -20,22 +15,11 @@ export default class ScheduleService {
   }
 
   /** 주간 일정 가져오기 */
-  public async getWeekSchedule(payload: GetWeekSchedulePayload) {
+  public async getWeekSchedule(week: 'pre' | 'cur' | 'nex' = 'cur') {
     try {
-      const result = await axios.post<GetWeekScheduleResponse>(`${this.baseUrl}/api/getWeekSchedule`, payload);
-
-      return result.data;
-    } catch (error) {
-      console.error(error);
-
-      throw error;
-    }
-  }
-
-  /** 일정 상세 데이터 가져오기 */
-  public async getDetailSchedule(payload: GetScheduleDetailPayload) {
-    try {
-      const result = await axios.post<GetScheduleDetailResponse>(`${this.baseUrl}/api/getDetailSchedule`, payload);
+      const result = await axios.post<GetWeekScheduleResponse>(`${this.baseUrl}/api/getWeekSchedule`, {
+        payload: week,
+      });
 
       return result.data;
     } catch (error) {

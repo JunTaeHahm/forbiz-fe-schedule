@@ -10,20 +10,19 @@
 
 .h {
   width: 100%;
-  min-width: 1920px;
-  display: flex;
-  justify-content: center;
+  height: 100%;
 }
 
 html,
 body {
+  width: 100%;
   height: 100%;
   font-weight: 400;
   font-size: 13px;
   line-height: 14px;
   letter-spacing: -0.33px;
   color: $black;
-  background: $bg-blue !important;
+  background: $bg-lightblue !important;
 }
 
 html,

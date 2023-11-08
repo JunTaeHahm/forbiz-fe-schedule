@@ -1,24 +1,14 @@
 <template>
   <div
-    v-if="isLoading && !isError"
+    v-if="isLoading"
     class="h__dim"
   >
     <div class="h__dim--loading"></div>
   </div>
-  <div
+  <!-- <div
     v-if="isError"
     class="h__dim"
-  >
-    <div class="h__dim--error">
-      <span>네트워크 오류</span>
-      <button
-        type="button"
-        @click="handleRefresh"
-      >
-        새로고침
-      </button>
-    </div>
-  </div>
+  ></div> -->
   <div class="h__home">
     <div class="h__home__header">
       <h1 class="h__home__header--title">
@@ -31,13 +21,40 @@
         FE Schedule
       </h1>
 
+      <div class="h__home__header--week">
+        <div class="h__home__header--week--date">
+          {{ `${startDate.slice(2, 11)} (월) - ${endDate.slice(2, 11)} (금)` }}
+        </div>
+        <div class="btns">
+          <button
+            class="h__home__header--week--button"
+            type="button"
+            @click="handleWeek('pre')"
+          >
+            <span>지난주</span>
+          </button>
+          <button
+            class="h__home__header--week--button"
+            type="button"
+            @click="handleWeek('cur')"
+          >
+            <span>현재</span>
+          </button>
+          <button
+            class="h__home__header--week--button"
+            type="button"
+            @click="handleWeek('nex')"
+          >
+            <span>다음주</span>
+          </button>
+        </div>
+      </div>
+
       <div class="h__home__header--content">
         <dl class="h__home__header--status">
           <span>🌐 로딩상태</span>
           <div class="wrap">
-            <div>주간일정 : {{ checkStatus(fetches.getWeekSchedule) }}</div>
-            <div>공유일정 : {{ checkStatus(fetches.getDetailSchedule) }}</div>
-            <div>투입시간 : {{ checkStatus(fetches.weekScheduleList) }}</div>
+            <div>{{ checkStatus(fetches.getWeekSchedule) }}</div>
           </div>
         </dl>
         <dl class="h__home__header--notice">
@@ -49,50 +66,13 @@
         <dl class="h__home__header--notice">
           <dt>📌 전달사항</dt>
           <dd>계산이 일치하지 않은 경우 말씀해주세요.</dd>
-          <dd>새벽 일정 계산은 개발중입니다.</dd>
           <dd>버그 및 피드백은 언제나 환영합니다.</dd>
         </dl>
-      </div>
-
-      <div class="h__home__header--week">
-        <div class="h__home__header--week--date">
-          {{ `${startDate.slice(2, 11)} (월) - ${endDate.slice(2, 11)} (금)` }}
-        </div>
-        <div class="btns">
-          <button
-            class="h__home__header--week--button"
-            type="button"
-            @click="handlePrevWeek"
-          >
-            <span>이전</span>
-          </button>
-          <button
-            class="h__home__header--week--button"
-            type="button"
-            @click="handleThisWeek"
-          >
-            <span>이번주</span>
-          </button>
-          <button
-            class="h__home__header--week--button"
-            type="button"
-            @click="handleNextWeek"
-          >
-            <span>다음</span>
-          </button>
-        </div>
       </div>
     </div>
 
     <div class="h__home__content">
-      <h-table
-        :members="members.slice(0, 5)"
-        :schedules="schedules.slice(0, 5)"
-      ></h-table>
-      <h-table
-        :members="members.slice(5, 10)"
-        :schedules="schedules.slice(5, 10)"
-      ></h-table>
+      <h-table :schedules="scheduleList"></h-table>
       <div class="h__home__content--footer">2023. JunTae Hahm.</div>
     </div>
   </div>
@@ -111,13 +91,8 @@
     isError,
     checkStatus,
 
-    members,
-    schedules,
-
-    handleRefresh,
-    handlePrevWeek,
-    handleThisWeek,
-    handleNextWeek,
+    scheduleList,
+    handleWeek,
   } = homeComposable();
 </script>
 

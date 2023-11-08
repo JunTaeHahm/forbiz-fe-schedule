@@ -66,3 +66,24 @@ export const useCalculateTime = (schedule: WeekSchedule): Time => {
 
   return { time, hasOverTime, overTime };
 };
+
+export const calculateTime = (timeRange: string) => {
+  // Split the string by the '~' character
+  const times = timeRange.split('~').map((t) => t.trim());
+
+  // Parse the start and end times
+  const [startHour, startMinute] = times[0].split(':').map(Number);
+  const [endHour, endMinute] = times[1].split(':').map(Number);
+
+  // Calculate the total minutes for start and end times
+  const startTotalMinutes = startHour * 60 + startMinute;
+  const endTotalMinutes = endHour * 60 + endMinute;
+
+  // Calculate the difference in minutes
+  const diffMinutes = endTotalMinutes - startTotalMinutes;
+
+  // Convert minutes to hours with half-hour increments
+  const diffInHours = diffMinutes / 60;
+
+  return diffInHours;
+};

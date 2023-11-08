@@ -4,11 +4,8 @@
   &__home {
     display: flex;
     flex-direction: column;
-    width: max-content;
-    border-radius: 50px;
-    background-color: $bg-lightblue;
-    box-shadow: $shadow-l;
-    margin: 150px 0 80px;
+    width: 100%;
+    height: 100%;
 
     &__header {
       position: relative;
@@ -16,26 +13,27 @@
       flex-shrink: 0;
       justify-content: center;
       align-items: center;
-      gap: 30px;
-      padding: 25px 0;
-      border-bottom: 1px solid $border;
+      gap: 50px;
+      padding: 30px 0 50px;
+      // border-bottom: 1px solid $border;
 
       &--logo {
         width: 150px;
         height: auto;
-        margin-bottom: 15px;
         margin-right: 100px;
+        margin-bottom: 15px;
       }
 
       &--title {
+        margin-bottom: -50px;
         // margin-top: 20px;
         font-size: 28px;
       }
 
       &--content {
         display: flex;
-        gap: 30px;
-        margin-left: 100px;
+        gap: 100px;
+        margin-bottom: 50px;
       }
 
       &--status {
@@ -53,7 +51,7 @@
           margin-top: 10px;
 
           div::before {
-            content: '-';
+            content: '';
             margin-right: 4px;
           }
         }
@@ -82,7 +80,8 @@
 
       &--week {
         position: absolute;
-        top: -90px;
+        top: 180px;
+        z-index: 10;
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -107,7 +106,7 @@
           padding: 5px 10px;
           border-radius: 5px;
           font-weight: bold;
-          background-color: $bg-lightblue;
+          background-color: $white;
           cursor: pointer;
 
           &:first-child {
@@ -144,10 +143,10 @@
 
       &--footer {
         position: absolute;
-        bottom: 0;
+        bottom: 40px;
         left: 50%;
         font-weight: bold;
-        color: $white;
+        color: $black;
         transform: translate(-50%, 30px);
       }
     }

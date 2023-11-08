@@ -10,79 +10,46 @@ type FeMember =
   | '정재원'
   | '함준태';
 
-type WeekSchedule = Pick<GetWeekScheduleItem, 'startDate' | 'endDate' | 'createName' | 'schTitle' | 'schSeq'>;
+type Schedule = {
+  시간: string;
+  일자: string;
+  일정명: string;
+};
 
-type ShareSchedule = Pick<GetWeekScheduleItem, 'startDate' | 'endDate' | 'createName' | 'schSeq'>;
+type TimeRecord = {
+  T: number; // 정규 근무 시간
+  OT: number; // 초과 근무 시간
+  tasks: string[]; // 수행한 태스크 목록
+};
 
-interface ScheduleResult {
-  time: number;
-  overTime: number;
-  title: Set<string>;
-}
+type ProjectRecord = { [projectName: string]: TimeRecord };
 
-type Schedule = Record<string, ScheduleResult>;
+type MemberRecord = { [memberName in FeMember]?: ProjectRecord };
 
-interface GetWeekSchedulePayload {
-  calType: 'M';
-  endDate: string;
-  mcalSeq: '125';
-  mySchYn: 'N';
-  startDate: string;
-}
+type WorkRecords = {
+  [projectName: string]: ProjectRecord;
+};
+
+type ScheduleObj = {
+  [K in FeMember]?: Schedule[];
+};
 
 interface GetWeekScheduleItem {
-  schmSeq: string;
-  resYn: string;
-  partCount: number;
-  endDate: string; // 종료일
-  schSeq: string; // 일정 고유 번호
-  calTitle: string;
-  gbnCode: string;
-  schPlace: string;
-  partName: FeMember;
-  delYn: string;
-  joinYn: string;
-  createDateOrder: string;
-  gbnName: string;
-  calColor: string;
-  calRwGbn: string;
-  gbnSeq: string;
-  schTitle: string; // 일정 제목
-  schGbnCode: string;
-  alldayYn: string;
-  mcalSeq: string;
-  startDate: string; // 시작일
-  createName: FeMember; // 작성자
-  statusCode: string;
+  시간: string;
+  일자: string;
+  일정명: string;
+  일정대상자: string;
 }
 
 type GetWeekScheduleResponse = GetWeekScheduleItem[];
 
-interface GetScheduleDetailPayload {
-  detailYn: 'Y';
-  schSeq: string[];
-  schmSeq: string[];
-}
-
-interface GetScheduleDetailItem {
-  createName: FeMember;
-  startDate: string;
-  endDate: string;
-  schTitle: string;
-  userList: FeMember[];
-}
-type GetScheduleDetailResponse = GetScheduleDetailItem[];
-
 export type {
   FeMember,
-  WeekSchedule,
-  ShareSchedule,
-  ScheduleResult,
   Schedule,
-  GetWeekSchedulePayload,
-  GetWeekScheduleItem,
+  ProjectRecord,
+  WorkRecords,
+  MemberRecord,
+  ScheduleObj,
   GetWeekScheduleResponse,
-  GetScheduleDetailPayload,
-  GetScheduleDetailItem,
-  GetScheduleDetailResponse,
+  GetWeekScheduleItem,
 };

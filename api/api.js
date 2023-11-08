@@ -1,9 +1,7 @@
-import axios from 'axios';
 import dotenv from 'dotenv';
 import express from 'express';
 import puppeteer from 'puppeteer';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import XLSX from 'xlsx';
 import fs from 'fs';
 
@@ -42,7 +40,7 @@ async function waitForExcelFile(excelFolder, timeout = 30000) {
   });
 }
 
-const setBrowser = async () => {
+const setBrowser = async (week) => {
   // 디렉토리 내의 모든 파일을 가져옵니다.
   const files = fs.readdirSync(downloadPath);
 
@@ -55,11 +53,9 @@ const setBrowser = async () => {
     }
   });
 
-  console.log('All files have been deleted.');
-
   const browser = await puppeteer.launch({
-    // headless: 'new',
-    headless: false,
+    headless: 'new',
+    // headless: false,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
@@ -102,19 +98,34 @@ const setBrowser = async () => {
   });
   await frame.waitForTimeout(2000);
 
-  // [지난 주]
-  await frame.waitForSelector('li.pre > a', { visible: true });
-  await frame.evaluate(() => {
-    document.querySelector('li.pre > a').click();
-  });
+  switch (week) {
+    case 'pre':
+      // [지난 주]
+      await frame.waitForSelector('li.pre > a', { visible: true });
+      await frame.evaluate(() => {
+        document.querySelector('li.pre > a').click();
+      });
+      break;
+    case 'cur':
+      // [현재]
+      await frame.waitForSelector('li.cur > a', { visible: true });
+      await frame.evaluate(() => {
+        document.querySelector('li.cur > a').click();
+      });
+      break;
+    case 'nex':
+      // [디음 주]
+      await frame.waitForSelector('li.nex > a', { visible: true });
+      await frame.evaluate(() => {
+        document.querySelector('li.nex > a').click();
+      });
+      break;
+
+    default:
+      break;
+  }
 
   await frame.waitForTimeout(1000);
-
-  // const cookies = await page.cookies();
-  // const cookie = cookies.find((v) => v.path === '/gw');
-  // if (!cookie) throw new Error('Failed to retrieve cookies');
-
-  // return { name: cookie.name, value: cookie.value };
 
   // [엑셀] 클릭 후 파일 다운로드 설정
   await frame.waitForSelector('.submit.puddSetup', { visible: true });
@@ -136,81 +147,24 @@ const setBrowser = async () => {
     const sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
     const data = XLSX.utils.sheet_to_json(worksheet);
-    console.log('data: ', data);
+
+    return data;
   } catch (error) {
     console.error(error.message);
   }
 
-  // await browser.close();
+  await browser.close();
 };
 
-await setBrowser();
+router.post('/getWeekSchedule', async (req, res) => {
+  try {
+    const response = await setBrowser(req.body.payload);
 
-// router.post('/getWeekSchedule', async (req, res) => {
-//   const { calType, startDate, endDate, mcalSeq, mySchYn } = req.body;
-
-//   try {
-//     const cookie = await setBrowser();
-
-//     const response = await axios.post(
-//       'https://gw.forbiz.co.kr/schedule/WebMtSchedule/SearchMtScheduleList',
-//       { calType, startDate, endDate, mcalSeq, mySchYn },
-//       {
-//         withCredentials: true,
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Cookie: `${cookie.name}=${cookie.value};`,
-//         },
-//       },
-//     );
-
-//     res.status(200).send(response.data.result.schList);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('Internal Server Error');
-//   }
-// });
-
-// router.post('/getDetailSchedule', async (req, res) => {
-//   const { detailYn, schSeq: schSeqList } = req.body;
-
-//   try {
-//     const cookie = await setBrowser();
-
-//     const result = await Promise.all(
-//       schSeqList.map(async (schSeq) => {
-//         const response = await axios.post(
-//           'https://gw.forbiz.co.kr/schedule/WebMtSchedule/SearchMtSchedule',
-//           { detailYn, schSeq, schmSeq: schSeq },
-//           {
-//             withCredentials: true,
-//             headers: {
-//               'Content-Type': 'application/json',
-//               Cookie: `${cookie.name}=${cookie.value};`,
-//             },
-//           },
-//         );
-
-//         return response.data.result;
-//       }),
-//     );
-
-//     const shareScheduleList = [];
-//     result.forEach((v) => {
-//       shareScheduleList.push({
-//         schTitle: v.schTitle,
-//         createName: v.createName,
-//         userList: v.schUserList.filter((user) => user.userType === '10').map((v) => v.orgName),
-//         startDate: v.startDate,
-//         endDate: v.endDate,
-//       });
-//     });
-
-//     res.status(200).send(shareScheduleList);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('Internal Server Error');
-//   }
-// });
+    res.status(200).send(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 export default router;

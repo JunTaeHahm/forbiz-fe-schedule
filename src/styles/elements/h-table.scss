@@ -10,26 +10,27 @@
     }
   }
 
-  &__thead {
-    position: relative;
-
+  &__tbody {
     &__row {
-      position: absolute;
-      top: 0;
-      left: 0;
       display: flex;
-      gap: 25px;
-      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+      column-gap: 25px;
+      row-gap: 50px;
     }
 
     &__column {
-      z-index: 10;
-      width: calc(100% / 5);
-      max-width: 250px;
+      position: relative;
+      width: calc(100% / 6);
       min-width: 250px;
-      text-align: center;
+      margin-top: 15px;
+      border-radius: 20px;
+      box-shadow: $shadow-s;
 
       &--member {
+        position: absolute;
+        top: -15px;
+        left: 50%;
         display: inline-block;
         height: 30px;
         padding: 0 25px;
@@ -37,31 +38,15 @@
         font-weight: bold;
         line-height: 30px;
         text-align: center;
-        color: $white;
-        background: $primary;
+        color: var(--white);
+        background: var(--primary);
+        transform: translateX(-50%);
       }
-    }
-  }
-
-  &__tbody {
-    &__row {
-      display: flex;
-      gap: 25px;
-    }
-
-    &__column {
-      position: relative;
-      width: calc(100% / 5);
-      max-width: 250px;
-      min-width: 250px;
-      margin-top: 15px;
-      border-radius: 20px;
-      box-shadow: $shadow-s;
 
       &--copy-btn {
         position: absolute;
-        right: 35px;
         top: 15px;
+        right: 35px;
         display: inline-block;
         cursor: pointer;
 
@@ -88,12 +73,12 @@
         padding: 20px;
         border-radius: 20px;
         background-color: $white;
-        transition: transform ease 0.3s;
         transform-origin: top center;
+        transition: transform ease 0.3s;
 
-        &:hover {
-          transform: scale(1.02);
-        }
+        // &:hover {
+        //   transform: scale(1.02);
+        // }
       }
 
       &--inner {
@@ -107,9 +92,14 @@
 
       &--project-name {
         margin-top: 10px;
+        margin-bottom: 4px;
         font-weight: bold;
         font-size: 14px;
-        margin-bottom: 4px;
+
+        &.total {
+          padding-top: 10px;
+          border-top: 1px solid $bg-lightblue;
+        }
       }
 
       &--time {
@@ -118,7 +108,7 @@
       &--overtime {
       }
 
-      &--title {
+      &--task {
         margin-top: 2px;
         &::before {
           content: '·';
