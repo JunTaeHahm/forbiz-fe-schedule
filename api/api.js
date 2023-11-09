@@ -54,17 +54,17 @@ const setBrowser = async (week) => {
   });
 
   const browser = await puppeteer.launch({
+    dumpio: true,
     headless: 'new',
     // headless: false,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      '--single-process',
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
       '--disable-extensions',
+      '--disable-gpu', // GPU 하드웨어 가속을 비활성화
+      '--disable-dev-shm-usage', // Docker 같은 제한된 환경에서 메모리 문제를 방지
     ],
-    ignoreHTTPSErrors: true,
+    ignoreDefaultArgs: ['--disable-extensions'],
     devtools: false,
     protocolTimeout: 60000,
   });
