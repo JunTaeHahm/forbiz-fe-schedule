@@ -18,7 +18,7 @@ export default function hTableComposable(props: Props) {
 
     if (text) {
       try {
-        await navigator.clipboard.writeText(text);
+        await navigator.clipboard?.writeText(text);
         window.alert('복사되었습니다.');
       } catch (err) {
         console.error('Failed to copy text: ', err);

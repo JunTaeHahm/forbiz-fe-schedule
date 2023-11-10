@@ -153,7 +153,7 @@ const setBrowser = async (week, part) => {
       break;
   }
 
-  await frame.waitForTimeout(1000);
+  // await frame.waitForTimeout(1000);
 
   // [엑셀] 클릭 후 파일 다운로드 설정
   await frame.waitForSelector('.submit.puddSetup', { visible: true });

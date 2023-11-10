@@ -173,7 +173,13 @@ export default function homeComposable(props: Props) {
           (OT > 0 || ['FE', 'QA', '전사', '전사공통', '기타'].includes(projectName)) &&
           !memberRecord[projectName].tasks.includes(taskName)
         ) {
-          memberRecord[projectName].tasks.push(taskName);
+          // 문자열 앞의 공백 제거 및 연속된 공백을 하나로 치환
+          const cleanedTaskName = taskName.trim().replace(/\s+/g, ' ');
+
+          // 중복되지 않은 경우에만 추가
+          if (!memberRecord[projectName].tasks.includes(cleanedTaskName)) {
+            memberRecord[projectName].tasks.push(cleanedTaskName);
+          }
         }
 
         // 합계 계산
@@ -256,7 +262,6 @@ export default function homeComposable(props: Props) {
   };
 
   const init = async () => {
-    console.log('init');
     await getWeekSchedule();
   };
 
