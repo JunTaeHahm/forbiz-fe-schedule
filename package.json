@@ -7,8 +7,8 @@
     "dev": "vite",
     "serve": "nodemon server.js",
     "build": "vite build --base=./",
-    "deployL": "DOCKER_BUILDKIT=1 docker build --no-cache . -t juntaehahm/forbiz-fe-schedule:latest --platform=linux/amd64 --push",
-    "deployW": "docker build --no-cache . -t juntaehahm/forbiz-fe-schedule:latest --platform=linux/amd64 --push",
+    "deployL": "DOCKER_BUILDKIT=1 docker build --no-cache . -t juntaehahm/forbiz-fe-schedule:latest --platform=linux/amd64",
+    "deployW": "docker build . -t juntaehahm/forbiz-fe-schedule:latest --platform=linux/amd64 &&  docker run --privileged -p 3000:3000 juntaehahm/forbiz-fe-schedule",
     "lint": "eslint --ext .ts,vue --ignore-path .gitignore ."
   },
   "dependencies": {

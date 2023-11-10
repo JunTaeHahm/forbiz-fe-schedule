@@ -10,15 +10,16 @@ export default class ScheduleService {
     if (isDevelopment) {
       this.baseUrl = 'http://localhost:3000'; // 개발
     } else {
-      this.baseUrl = 'https://large-cassandre-juntaehahm.koyeb.app'; // 배포
+      this.baseUrl = 'http://192.168.1.49:3000'; // 배포
     }
   }
 
   /** 주간 일정 가져오기 */
-  public async getWeekSchedule(week: 'pre' | 'cur' | 'nex' = 'cur') {
+  public async getWeekSchedule(week: 'pre' | 'cur' | 'nex' = 'cur', part: string | string[] = 'fe') {
     try {
       const result = await axios.post<GetWeekScheduleResponse>(`${this.baseUrl}/api/getWeekSchedule`, {
-        payload: week,
+        week,
+        part,
       });
 
       return result.data;

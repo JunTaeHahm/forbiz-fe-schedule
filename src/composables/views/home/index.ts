@@ -1,14 +1,24 @@
-import { computed, onMounted, reactive, ref } from 'vue';
+import { PropType, computed, onMounted, reactive, ref } from 'vue';
 import ScheduleService from '@/services/schedules';
-import { FeMember, ProjectRecord, MemberRecord, ScheduleObj } from '@/types/schedule.types';
+import { FbMember, ProjectRecord, MemberRecord, ScheduleObj } from '@/types/schedule.types';
 import { useCalculateWeek } from '@/utils/date';
 import dayjs from 'dayjs';
 
-export default function homeComposable() {
+interface Props {
+  part: string | string[];
+}
+
+const props = {
+  part: {
+    type: String as PropType<Props['part']>,
+    default: 'fe',
+  },
+};
+
+export default function homeComposable(props: Props) {
   // #region 이번주 시작일과 종료일
   const startDate = ref(useCalculateWeek().startDate);
   const endDate = ref(useCalculateWeek().endDate);
-
   // #endregion
 
   // #region fetches
@@ -62,8 +72,9 @@ export default function homeComposable() {
 
   const scheduleList = ref<MemberRecord>();
 
-  const isFeMember = (target: string): target is FeMember => {
+  const isFbMember = (target: string): target is FbMember => {
     return [
+      /* FE */
       '김석진',
       '김승우',
       '김태이',
@@ -74,24 +85,42 @@ export default function homeComposable() {
       '정수범',
       '정재원',
       '함준태',
+      /* QA */
+      '이상욱',
+      '이성길',
+      '신조아',
+      '김예진',
+      '이준호',
     ].includes(target);
   };
 
-  // 멤버별 출근 및 퇴근 시간을 정의하는 객체
+  // 멤버별 출퇴근 시간을 설정하는 객체
+  const memberWorkHours = {
+    /* FE */
+    김석진: { start: 9, end: 18 },
+    김승우: { start: 9, end: 18 },
+    김태이: { start: 9, end: 18 },
+    윤보라: { start: 9.5, end: 18.5 },
+    임지원: { start: 9, end: 18 },
+    전동엽: { start: 9.5, end: 18.5 },
+    전민주: { start: 9, end: 18 },
+    정수범: { start: 9.5, end: 18.5 },
+    정재원: { start: 9, end: 18 },
+    함준태: { start: 9, end: 18 },
+    /* QA */
+    이상욱: { start: 9, end: 18 },
+    이성길: { start: 9.5, end: 18.5 },
+    신조아: { start: 10, end: 19 },
+    김예진: { start: 9.5, end: 18.5 },
+    이준호: { start: 9.5, end: 18.5 },
+  };
 
   const setScheduleList = (schedules: ScheduleObj) => {
     const memberRecords: MemberRecord = {};
 
-    for (const member of Object.keys(schedules) as FeMember[]) {
-      // 멤버의 첫 일정 시간을 출근 시간으로 설정
+    for (const member of Object.keys(schedules) as FbMember[]) {
       const memberSchedules = schedules[member];
-      const firstScheduleTime = memberSchedules![0].시간.split(' ~ ')[0];
-      const [firstStartHour, firstStartMinute] = firstScheduleTime.split(':').map(Number);
-      const firstStart = firstStartHour + firstStartMinute / 60;
-
-      // 첫 일정의 시작 시간에 따른 출퇴근 시간 설정
-      const start = Math.floor(firstStart);
-      const end = start + 9; // 9시간 후를 퇴근 시간으로 설정
+      const workHours = memberWorkHours[member]; // 개별 멤버의 출퇴근 시간
 
       const memberRecord: ProjectRecord = {};
       let totalT = 0;
@@ -108,19 +137,19 @@ export default function homeComposable() {
         let OT = 0;
 
         // 정규 근무 시간 내에서 시작과 끝 처리
-        if (startTime < end && endTime > start) {
-          T = Math.min(end, endTime) - Math.max(start, startTime);
+        if (startTime < workHours.end && endTime > workHours.start) {
+          T = Math.min(workHours.end, endTime) - Math.max(workHours.start, startTime);
         }
 
         // 퇴근 시간 이후에 끝나는 일정 처리
-        if (endTime > end) {
-          OT += endTime - Math.max(end, startTime);
+        if (endTime > workHours.end) {
+          OT = endTime - Math.max(workHours.end, startTime);
         }
 
         // 출근 시간 전에 시작하는 일정 처리
-        if (startTime < start) {
-          OT += start - startTime;
-          T -= start - startTime; // 이미 추가된 정규 근무 시간에서 제외
+        if (startTime < workHours.start) {
+          OT += workHours.start - startTime;
+          T -= workHours.start - startTime; // 이미 추가된 정규 근무 시간에서 제외
         }
 
         // 결과를 프로젝트명으로 분류
@@ -141,7 +170,7 @@ export default function homeComposable() {
 
         // tasks에 중복 없이 추가
         if (
-          (OT > 0 || ['FE', '전사', '전사공통', '기타'].includes(projectName)) &&
+          (OT > 0 || ['FE', 'QA', '전사', '전사공통', '기타'].includes(projectName)) &&
           !memberRecord[projectName].tasks.includes(taskName)
         ) {
           memberRecord[projectName].tasks.push(taskName);
@@ -170,15 +199,14 @@ export default function homeComposable() {
   const getWeekSchedule = async (week: 'pre' | 'cur' | 'nex' = 'cur') => {
     try {
       fetch.start('getWeekSchedule');
-
-      const schedules = await scheduleService.getWeekSchedule(week);
+      const schedules = await scheduleService.getWeekSchedule(week, props.part);
 
       const result: ScheduleObj = {};
       schedules.forEach((schedule) => {
         const targets: string[] = schedule.일정대상자.split(', ');
         targets.forEach((target) => {
-          // target이 FeMember 타입인지 확인
-          if (isFeMember(target)) {
+          // target이 FbMember 타입인지 확인
+          if (isFbMember(target)) {
             // 대상자 이름을 키로 사용하여 객체 초기화
             if (!result[target]) {
               result[target] = [];
@@ -228,6 +256,7 @@ export default function homeComposable() {
   };
 
   const init = async () => {
+    console.log('init');
     await getWeekSchedule();
   };
 
@@ -248,3 +277,7 @@ export default function homeComposable() {
     handleWeek,
   };
 }
+
+export { props as homeProps };
+
+export type { Props as HomeProps };

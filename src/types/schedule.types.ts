@@ -1,4 +1,5 @@
-type FeMember =
+type FbMember =
+  /* FE */
   | '김석진'
   | '김승우'
   | '김태이'
@@ -8,7 +9,13 @@ type FeMember =
   | '전민주'
   | '정수범'
   | '정재원'
-  | '함준태';
+  | '함준태'
+  /* QA */
+  | '이상욱'
+  | '이성길'
+  | '신조아'
+  | '김예진'
+  | '이준호';
 
 type Schedule = {
   시간: string;
@@ -24,14 +31,14 @@ type TimeRecord = {
 
 type ProjectRecord = { [projectName: string]: TimeRecord };
 
-type MemberRecord = { [memberName in FeMember]?: ProjectRecord };
+type MemberRecord = { [memberName in FbMember]?: ProjectRecord };
 
 type WorkRecords = {
   [projectName: string]: ProjectRecord;
 };
 
 type ScheduleObj = {
-  [K in FeMember]?: Schedule[];
+  [K in FbMember]?: Schedule[];
 };
 
 interface GetWeekScheduleItem {
@@ -44,7 +51,7 @@ interface GetWeekScheduleItem {
 type GetWeekScheduleResponse = GetWeekScheduleItem[];
 
 export type {
-  FeMember,
+  FbMember,
   Schedule,
   ProjectRecord,
   WorkRecords,

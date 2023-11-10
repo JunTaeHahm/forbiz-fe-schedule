@@ -18,7 +18,7 @@
             alt="로고"
           />
         </figure>
-        FE Schedule
+        {{ (part as string).toUpperCase() }} Schedule
       </h1>
 
       <div class="h__home__header--week">
@@ -80,7 +80,9 @@
 
 <script setup lang="ts">
   import HTable from '@/components/elements/h-table.vue';
-  import homeComposable from '@/composables/views/home';
+  import homeComposable, { homeProps } from '@/composables/views/home';
+
+  const props = defineProps(homeProps);
 
   const {
     startDate,
@@ -88,12 +90,11 @@
 
     fetches,
     isLoading,
-    isError,
     checkStatus,
 
     scheduleList,
     handleWeek,
-  } = homeComposable();
+  } = homeComposable(props);
 </script>
 
 <style scoped lang="scss">

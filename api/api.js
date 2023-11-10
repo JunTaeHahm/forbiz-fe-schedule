@@ -8,10 +8,10 @@ import fs from 'fs';
 dotenv.config();
 
 const router = express.Router();
-const { USER_ID, USER_PW } = process.env;
+const { FE_USER_ID, FE_USER_PW, QA_USER_ID, QA_USER_PW } = process.env;
 const downloadPath = path.resolve('./excel');
 
-if (!USER_ID || !USER_PW) {
+if (!FE_USER_ID || !FE_USER_PW) {
   throw new Error('환경변수의 ID/PW 설정이 필요합니다.');
 }
 
@@ -22,13 +22,19 @@ async function waitForExcelFile(excelFolder, timeout = 30000) {
 
     // 폴링 함수
     function poll() {
-      const excelFiles = fs
-        .readdirSync(excelFolder)
-        .filter((file) => path.extname(file).toLowerCase() === '.xlsx')
-        .map((file) => path.join(excelFolder, file));
+      const excelFiles = fs.readdirSync(excelFolder);
+      console.log('excelFiles: ', excelFiles);
 
       if (excelFiles.length > 0) {
-        resolve(excelFiles[0]); // 첫 번째 .xlsx 파일 경로를 반환
+        const originalFilePath = path.join(excelFolder, excelFiles[0]);
+        const newFilePath = path.join(excelFolder, 'download.xlsx');
+
+        try {
+          fs.renameSync(originalFilePath, newFilePath);
+          resolve(newFilePath); // 새 파일 경로로 해결
+        } catch (error) {
+          reject(error); // 파일 이름 변경 중 오류가 발생하면 거부
+        }
       } else if (Date.now() - startTime >= timeout) {
         reject(new Error('Timeout waiting for the .xlsx file'));
       } else {
@@ -40,7 +46,7 @@ async function waitForExcelFile(excelFolder, timeout = 30000) {
   });
 }
 
-const setBrowser = async (week) => {
+const setBrowser = async (week, part) => {
   // 디렉토리 내의 모든 파일을 가져옵니다.
   const files = fs.readdirSync(downloadPath);
 
@@ -54,17 +60,16 @@ const setBrowser = async (week) => {
   });
 
   const browser = await puppeteer.launch({
-    dumpio: true,
     headless: 'new',
     // headless: false,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
+      '--single-process',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
       '--disable-extensions',
-      '--disable-gpu', // GPU 하드웨어 가속을 비활성화
-      '--disable-dev-shm-usage', // Docker 같은 제한된 환경에서 메모리 문제를 방지
     ],
-    ignoreDefaultArgs: ['--disable-extensions'],
     devtools: false,
     protocolTimeout: 60000,
   });
@@ -76,8 +81,19 @@ const setBrowser = async (week) => {
   await page.goto('https://gw.forbiz.co.kr/gw/userMain.do', { waitUntil: 'networkidle0' });
 
   // 로그인
-  await page.type('#userId', USER_ID);
-  await page.type('#userPw', USER_PW);
+  switch (part) {
+    case 'fe':
+      await page.type('#userId', FE_USER_ID);
+      await page.type('#userPw', FE_USER_PW);
+      break;
+    case 'qa':
+      await page.type('#userId', QA_USER_ID);
+      await page.type('#userPw', QA_USER_PW);
+      break;
+
+    default:
+      break;
+  }
   await page.click('.login_submit');
 
   // 일정 진입
@@ -85,11 +101,23 @@ const setBrowser = async (week) => {
   await page.click('#topMenu300000000');
 
   // FE팀 일정 진입
-  await page.waitForSelector('[aria-labelledby="301040000_125_anchor"] > a', { visible: true });
-  await page.click('[aria-labelledby="301040000_125_anchor"] > a');
+  let partLink;
+  switch (part) {
+    case 'fe':
+      partLink = '125';
+      break;
+    case 'qa':
+      partLink = '126';
+      break;
+    default:
+      break;
+  }
+
+  await page.waitForSelector(`[aria-labelledby="301040000_${partLink}_anchor"] > a`, { visible: true });
+  await page.click(`[aria-labelledby="301040000_${partLink}_anchor"] > a`);
 
   // iframe 찾기
-  const frame = await page.frames().find((f) => f.name() === '_content');
+  const frame = page.frames().find((f) => f.name() === '_content');
 
   // [개인별 주간] 클릭
   await frame.waitForSelector('button.fc-personalWeek-button', { visible: true });
@@ -157,8 +185,9 @@ const setBrowser = async (week) => {
 };
 
 router.post('/getWeekSchedule', async (req, res) => {
+  const { week, part } = req.body;
   try {
-    const response = await setBrowser(req.body.payload);
+    const response = await setBrowser(week, part);
 
     res.status(200).send(response);
   } catch (error) {
