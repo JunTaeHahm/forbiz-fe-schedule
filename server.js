@@ -7,11 +7,10 @@ import apiRouter from './api/api.js';
 
 // ES module에서 __dirname 사용하는 법
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const __filename = fileURLToPath(import.meta.url);
 
 // Express 앱 생성
 const app = express();
-const PORT = 3000;
+const PORT = 15000;
 
 // HTTP 서버 생성
 const httpServer = http.createServer(app);
@@ -19,7 +18,7 @@ const httpServer = http.createServer(app);
 // CORS 설정: 개발 환경과 배포 환경의 origin을 설정
 app.use(
   cors({
-    origin: ['http://192.168.1.49:3000', 'http://localhost:8000'], // TODO: 배포 후 추가적인 origin 추가 필요
+    origin: ['http://192.168.1.49:15000', 'http://localhost:15000', 'http://localhost:8000'],
     credentials: true,
   }),
 );

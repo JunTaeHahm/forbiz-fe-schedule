@@ -13,7 +13,7 @@ export default defineConfig({
     port: 8000,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000', // Express 서버의 주소
+        target: 'http://localhost:15000', // Express 서버의 주소
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

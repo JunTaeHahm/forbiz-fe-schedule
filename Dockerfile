@@ -16,7 +16,7 @@ RUN mkdir -p /root/.config/chromium/Crash\ Reports/pending/
 
 ENV NODE_ENV=production
 ENV VITE_APP_NODE_ENV=production
-ENV VITE_APP_SERVER_BASE_URL=http://192.168.1.49:3000
+ENV VITE_APP_SERVER_BASE_URL=http://192.168.1.49:15000
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 

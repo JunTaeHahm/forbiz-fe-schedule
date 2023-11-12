@@ -43,9 +43,9 @@
 <script setup lang="ts">
   import hTableComposable, { hTableProps } from '@/composables/elements/h-table';
 
-  const props = defineProps(hTableProps);
+  defineProps(hTableProps);
 
-  const { copySchedule } = hTableComposable(props);
+  const { copySchedule } = hTableComposable();
 </script>
 
 <style lang="scss" scoped>

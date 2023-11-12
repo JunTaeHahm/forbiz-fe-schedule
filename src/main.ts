@@ -14,7 +14,7 @@ const isDevelopment = import.meta.env.VITE_APP_NODE_ENV !== 'production';
 
 axios.defaults.withCredentials = true;
 if (isDevelopment) {
-  axios.defaults.baseURL = 'http://localhost:3000'; // 개발
+  axios.defaults.baseURL = 'http://localhost:15000'; // 개발
 } else {
-  axios.defaults.baseURL = 'http://192.168.1.49:3000'; // 배포
+  axios.defaults.baseURL = 'http://192.168.1.49:15000'; // 배포
 }

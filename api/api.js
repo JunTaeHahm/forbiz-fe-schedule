@@ -8,7 +8,7 @@ import fs from 'fs';
 dotenv.config();
 
 const router = express.Router();
-const { FE_USER_ID, FE_USER_PW, QA_USER_ID, QA_USER_PW } = process.env;
+const { FE_USER_ID, FE_USER_PW, QA_USER_ID, QA_USER_PW, GUI_USER_ID, GUI_USER_PW } = process.env;
 const downloadPath = path.resolve('./excel');
 
 if (!FE_USER_ID || !FE_USER_PW) {
@@ -90,6 +90,10 @@ const setBrowser = async (week, part) => {
       await page.type('#userId', QA_USER_ID);
       await page.type('#userPw', QA_USER_PW);
       break;
+    case 'gui':
+      await page.type('#userId', GUI_USER_ID);
+      await page.type('#userPw', GUI_USER_PW);
+      break;
 
     default:
       break;
@@ -108,6 +112,9 @@ const setBrowser = async (week, part) => {
       break;
     case 'qa':
       partLink = '126';
+      break;
+    case 'gui':
+      partLink = '124';
       break;
     default:
       break;

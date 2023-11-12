@@ -8,9 +8,9 @@ export default class ScheduleService {
 
   constructor() {
     if (isDevelopment) {
-      this.baseUrl = 'http://localhost:3000'; // 개발
+      this.baseUrl = 'http://localhost:15000'; // 개발
     } else {
-      this.baseUrl = 'http://192.168.1.49:3000'; // 배포
+      this.baseUrl = 'http://192.168.1.49:15000'; // 배포
     }
   }
 

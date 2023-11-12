@@ -91,6 +91,11 @@ export default function homeComposable(props: Props) {
       '신조아',
       '김예진',
       '이준호',
+      /* GUI */
+      '도진회',
+      '김다혜',
+      '진란',
+      '이선민',
     ].includes(target);
   };
 
@@ -113,6 +118,11 @@ export default function homeComposable(props: Props) {
     신조아: { start: 10, end: 19 },
     김예진: { start: 9.5, end: 18.5 },
     이준호: { start: 9.5, end: 18.5 },
+    /* GUI */
+    도진회: { start: 9.5, end: 18.5 },
+    김다혜: { start: 9.5, end: 18.5 },
+    진란: { start: 9.5, end: 17.5 },
+    이선민: { start: 9.5, end: 18.5 },
   };
 
   const setScheduleList = (schedules: ScheduleObj) => {
@@ -170,7 +180,7 @@ export default function homeComposable(props: Props) {
 
         // tasks에 중복 없이 추가
         if (
-          (OT > 0 || ['FE', 'QA', '전사', '전사공통', '기타'].includes(projectName)) &&
+          (OT > 0 || ['FE', 'QA', 'GUI', '전사', '전사공통', '기타'].includes(projectName)) &&
           !memberRecord[projectName].tasks.includes(taskName)
         ) {
           // 문자열 앞의 공백 제거 및 연속된 공백을 하나로 치환
