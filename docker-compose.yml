@@ -1,0 +1,7 @@
+version: '3'
+services:
+  forbiz-fb-schedule:
+    image: juntaehahm/forbiz-fe-schedule:latest
+    restart: always
+    ports:
+      - '15000:15000'
